@@ -1,6 +1,8 @@
 import "./style.css";
 import printMe from "./print.js";
+import { TodoItem } from "./modules/todoItem";
 
+/*
 function component() {
   const element = document.createElement("div");
   const btn = document.createElement("button");
@@ -15,7 +17,20 @@ function component() {
 
   return element;
 }
+*/
+//content.appendChild(component());
+
+const todo = new TodoItem("title", "desc", "dueDate", "priority");
+const todoDiv = document.createElement("div");
+for (const key in todo) {
+  if (Object.hasOwnProperty.call(todo, key)) {
+    const element = todo[key];
+    todoDiv.textContent += ` ${element}`;    
+  }
+}
+
 
 const content = document.getElementById("content");
-content.appendChild(component());
-//document.body.appendChild(component());
+content.appendChild(todoDiv);
+
+
