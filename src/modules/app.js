@@ -1,8 +1,7 @@
-import "./style.css";
-import printMe from "./print.js";
-import Task from "./modules/task";
-import Project from "./modules/project";
-import DOM from "./modules/dom";
+import "../style.css";
+import printMe from "../print";
+import Task from "./task"
+import Project from "./project";
 
 /*
 
@@ -80,7 +79,6 @@ console.log(`displayTasks: ${project2.displayTasks()}`);
 const testArr = project.tasks.concat(project2.tasks);
 console.log(testArr);
 
-const dom = new DOM("testId", "hello", "h1", "Hello World!");
+
 const content = document.getElementById("content");
-dom.createElt(content);
 //content.appendChild(todoDiv);
