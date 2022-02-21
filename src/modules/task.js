@@ -4,9 +4,13 @@ export default class Task {
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
+    this.id = this.generateID(1, 1000000);
     this.complete = false;
   }
 
+  generateID(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
   isComplete() {
     return this.complete;
   }
