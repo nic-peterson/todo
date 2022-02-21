@@ -83,4 +83,11 @@ console.log(testArr);
 const dom = new DOM("testId", "hello", "h1", "Hello World!");
 const content = document.getElementById("content");
 dom.createElt(content);
+
+dom.addEventListener("click", () => {
+  console.log("click");
+})
+
+
+
 //content.appendChild(todoDiv);

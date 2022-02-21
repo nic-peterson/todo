@@ -20,12 +20,15 @@ export default class DOM {
 
   createElt(parent) {
     const parentNode = parent;
-    console.log(parentNode);
     let childNode  = document.createElement(this.eltType);
     childNode.id = this.id;
     childNode.className = this.className;
     childNode.textContent = this.textContent;
-    console.log(childNode);
     parentNode.appendChild(childNode);
+  }
+
+  addEventListener(type, listener) {
+    const el = this.returnNodeById(this.id);
+    el.addEventListener(type, listener, false);
   }
 }
