@@ -9,8 +9,9 @@ export default class Task {
   }
 
   generateID(min, max) {
-    return Math.floor(Math.random() * (max - min) ) + min;
+    return Math.floor(Math.random() * (max - min)) + min;
   }
+
   isComplete() {
     return this.complete;
   }
@@ -34,7 +35,8 @@ export default class Task {
   changePriority(input) {
     return (this.priority = input);
   }
-  
+
+  stringifyObject() {
+    return JSON.stringify(this);
+  }
 }
-
-

@@ -31,4 +31,10 @@ export default class DOM {
     const el = this.returnNodeById(this.id);
     el.addEventListener(type, listener, false);
   }
+
+  // TODO clear children
+
+  // TODO render self
+
+  // TODO render children
 }

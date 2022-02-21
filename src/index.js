@@ -3,6 +3,14 @@ import printMe from "./print.js";
 import Task from "./modules/task";
 import Project from "./modules/project";
 import DOM from "./modules/dom";
+import {
+  saveItem,
+  retrieveItem,
+  retrieveAllItems,
+  removeItem,
+  removeAllItems,
+  storageAvailable,
+} from "./modules/localStorage";
 
 /*
 
@@ -49,6 +57,7 @@ console.log(task.changeDueDate("new due date"));
 console.log(task.changePriority("new priority"));
 
 console.log(task);
+console.log(`stringifyObject: ${task.stringifyObject()}`);
 
 // * Testing creating a project
 const project = new Project("title");
@@ -86,8 +95,10 @@ dom.createElt(content);
 
 dom.addEventListener("click", () => {
   console.log("click");
-})
+});
 
-
+saveItem(task.id, task.stringifyObject());
+console.log(retrieveItem(task.id));
+console.log(retrieveAllItems());
 
 //content.appendChild(todoDiv);
