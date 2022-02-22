@@ -103,31 +103,32 @@ export default class UI {
     sidebar.appendChild(projectsList);
 
     // Apending fourth sidebar child
-    const addProjectBtn = document.createElement("button");
-    addProjectBtn.className = "button-add-project";
-    addProjectBtn.id = "button-add-project";
-    addProjectBtn.innerHTML = `<p><span class="material-icons">
-    add
-    </span>Add Project</p>`;
+    this.createAddProjectButton(sidebar);
+    // const addProjectBtn = document.createElement("button");
+    // addProjectBtn.className = "button-add-project";
+    // addProjectBtn.id = "button-add-project";
+    // addProjectBtn.innerHTML = `<p><span class="material-icons">
+    // add
+    // </span>Add Project</p>`;
 
-    addProjectBtn.addEventListener(
-      "click",
-      () => {
-        const project = new Project("event-title");
-        const task = new Task("title", "desc", "dueDate", "priority");
-        const task2 = new Task("title2", "desc2", "dueDate2", "priority2");
-        project.addTask(task);
-        project.addTask(task2);
-        console.log(`project.title: ${project.title}`);
-        console.log(`project.id: ${project.id}`);
-        console.log(`project.stringifyObject: ${project.stringifyObject()}`);
-        saveItem(project.id, project);
-        retrieveItem(project.id);
-      },
-      false
-    );
+    // addProjectBtn.addEventListener(
+    //   "click",
+    //   () => {
+    //     const project = new Project("project4");
+    //     const task = new Task("title", "desc", "dueDate", "priority");
+    //     const task2 = new Task("title2", "desc2", "dueDate2", "priority2");
+    //     project.addTask(task);
+    //     project.addTask(task2);
+    //     console.log(`project.title: ${project.title}`);
+    //     console.log(`project.id: ${project.id}`);
+    //     console.log(`project.stringifyObject: ${project.stringifyObject()}`);
+    //     saveItem(project.id, project);
+    //     retrieveItem(project.id);
+    //   },
+    //   false
+    // );
 
-    sidebar.appendChild(addProjectBtn);
+    // sidebar.appendChild(addProjectBtn);
 
     // container => child
     const container = document.createElement("div");
@@ -166,7 +167,7 @@ export default class UI {
     document.body.appendChild(footer);
   }
 
-  createAddProjectButton() {
+  createAddProjectButton(parentNode) {
     const addProjectBtn = document.createElement("button");
     addProjectBtn.className = "button-add-project";
     addProjectBtn.id = "button-add-project";
@@ -176,11 +177,22 @@ export default class UI {
 
     addProjectBtn.addEventListener(
       "click",
-      this.createNewProject("rubik"),
+      () => {
+        const project = new Project("project4");
+        const task = new Task("title", "desc", "dueDate", "priority");
+        const task2 = new Task("title2", "desc2", "dueDate2", "priority2");
+        project.addTask(task);
+        project.addTask(task2);
+        console.log(`project.title: ${project.title}`);
+        console.log(`project.id: ${project.id}`);
+        console.log(`project.stringifyObject: ${project.stringifyObject()}`);
+        saveItem(project.id, project);
+        retrieveItem(project.id);
+      },
       false
     );
 
-    return addProjectBtn;
+    parentNode.appendChild(addProjectBtn);
   }
 
   createAddTaskButton() {

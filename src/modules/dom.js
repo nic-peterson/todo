@@ -12,9 +12,9 @@ function createElt(parent, type, className, id, innerHTML) {
   parentNode.appendChild(childNode);
 }
 
-function addEventListener(type, listener) {
+function addEventListenerFunc(type, listener) {
   const el = this.returnNodeById(this.id);
   el.addEventListener(type, listener, false);
 }
 
-export {returnNodeById, createElt, addEventListener}
+export {returnNodeById, createElt, addEventListenerFunc}
