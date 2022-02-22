@@ -18,18 +18,17 @@ export default class UI {
   }
 
   createHeader() {
-    const header = document.createElement("div");
-    header.className = "header";
+    const header = createElt(document.body, "div", "header", "header", "");
 
-    const logo = document.createElement("div");
-    logo.className = "logo";
-    logo.id = "logo";
-    logo.innerHTML = `<p><span class="material-icons">
+    const logo = createElt(
+      header,
+      "div",
+      "logo",
+      "logo",
+      `<p><span class="material-icons">
     done_all
-    </span>ToDo!</p>`;
-
-    header.appendChild(logo);
-    document.body.appendChild(header);
+    </span>ToDo!</p>`
+    );
   }
 
   createBody() {
@@ -47,47 +46,68 @@ export default class UI {
     const defaultProjectList = document.createElement("div");
     defaultProjectList.className = "default-project-list";
 
-    // first sidebar grandchild
-    // const inbox = createElt(
-    //   defaultProjectList,
-    //   "button",
-    //   "button-default-project active",
-    //   "button-inbox-projects",
-    //   `<span class="material-icons">
-    // inbox
-    // </span>Inbox
-    // `
-    // );
-
-    const inbox = document.createElement("button");
-    inbox.className = "button-default-project";
-    inbox.id = "button-inbox-projects";
-    inbox.innerHTML = `<p><span class="material-icons">
+    const inbox = createElt(
+      defaultProjectList,
+      "button",
+      "button-default-project",
+      "button-inbox-projects",
+      `<p><span class="material-icons">
     inbox
     </span>Inbox</p>
-    `;
+    `
+    );
+    // const inbox = document.createElement("button");
+    // inbox.className = "button-default-project";
+    // inbox.id = "button-inbox-projects";
+    // inbox.innerHTML = `<p><span class="material-icons">
+    // inbox
+    // </span>Inbox</p>
+    // `;
     // second sidebar grandchild
-    const today = document.createElement("button");
-    today.className = "button-default-project";
-    today.id = "button-today-projects";
-    today.innerHTML = `<p><span class="material-icons">
+
+    const today = createElt(
+      defaultProjectList,
+      "button",
+      "button-default-project",
+      "button-today-project",
+      `<p><span class="material-icons">
     today
     </span>Today</p>
-    `;
+    `
+    );
+    // const today = document.createElement("button");
+    // today.className = "button-default-project";
+    // today.id = "button-today-projects";
+    // today.innerHTML = `<p><span class="material-icons">
+    // today
+    // </span>Today</p>
+    // `;
 
     // third sidebar grandchild
-    const week = document.createElement("button");
-    week.className = "button-default-project";
-    week.id = "button-week-projects";
-    week.innerHTML = `<p><span class="material-icons">
+
+    const week = createElt(
+      defaultProjectList,
+      "button",
+      "button-default-project",
+      "button-week-projects",
+      `<p><span class="material-icons">
     date_range
     </span>Week</p>
-    `;
+    `
+    );
+
+    // const week = document.createElement("button");
+    // week.className = "button-default-project";
+    // week.id = "button-week-projects";
+    // week.innerHTML = `<p><span class="material-icons">
+    // date_range
+    // </span>Week</p>
+    // `;
 
     // Appending sidebar grandchild
-    defaultProjectList.appendChild(inbox);
-    defaultProjectList.appendChild(today);
-    defaultProjectList.appendChild(week);
+    //defaultProjectList.appendChild(inbox);
+    //defaultProjectList.appendChild(today);
+    //defaultProjectList.appendChild(week);
     sidebar.appendChild(defaultProjectList);
 
     // Appending second sidebar child
@@ -123,7 +143,6 @@ export default class UI {
 
     // container child
     //const addTaskBtn = this.createAddTaskButton();
-    
 
     // appending container children
     container.appendChild(projectName);
@@ -172,12 +191,12 @@ export default class UI {
     add
     </span>Add Task</p>`
     );
-    
+
     addListener(addTaskBtn, "click", () => {
       const task = new Task("title", "desc", "dueDate", "priority");
       saveItem(task.id, task);
       retrieveItem(task.id);
-    })
+    });
   }
 
   createNewProject(title) {
