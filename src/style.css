@@ -108,12 +108,14 @@ body {
   flex-direction: column;
 }
 
-.button-default-project {
+.button-default-project,
+.button-add-project {
   background-color: var(--secondary-light);
   text-align: left;
   vertical-align: middle;
   border: 0;
   border-radius: 5px;
+  width: 100%;
 }
 
 .button-default-project > p {
@@ -145,25 +147,48 @@ body {
   font-weight: 700;
 }
 
-.button-project {
-  display: flex;
+.button-add-project > p {
+  font-weight: 900;
+}
 
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--secondary-light);
-  text-align: left;
+.button-add-project > p > span {
+  font-size: 2rem;
+  vertical-align: middle;
+}
+
+.button-add-project:hover {
+  background-color: var(--primary-light);
 }
 
 .container {
-  padding: 32px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  width: 900px;
+  padding: 20px 40px;
+  margin: 0 auto;
 }
 
-.card {
-  padding: 16px;
-  margin: 16px;
-  width: 300px;
+.button-add-task {
+  background-color: #fff;
+  text-align: left;
+  vertical-align: middle;
+  border: 0;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.button-add-task > p {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.button-add-task > p > span {
+  font-size: 2rem;
+  vertical-align: middle;
+}
+
+.button-add-task:hover {
+  background-color: var(--primary-light);
 }
 
 .footer {

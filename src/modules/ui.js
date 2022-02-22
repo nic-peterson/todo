@@ -95,9 +95,9 @@ export default class UI {
     const addProjectBtn = document.createElement("button");
     addProjectBtn.className = "button-add-project";
     addProjectBtn.id = "button-add-project";
-    addProjectBtn.innerHTML = `<span class="material-icons">
+    addProjectBtn.innerHTML = `<p><span class="material-icons">
     add
-    </span>Add Project`;
+    </span>Add Project</p>`;
 
     sidebar.appendChild(addProjectBtn);
 
@@ -110,7 +110,7 @@ export default class UI {
     const projectName = document.createElement("div");
     projectName.className = "project-name";
     projectName.id = "project-name";
-    projectName.innerHTML = "Inbox";
+    projectName.innerHTML = "<h1>Inbox</h1>";
 
     // container child
     const taskList = document.createElement("div");
@@ -119,11 +119,11 @@ export default class UI {
 
     // container child
     const addTaskBtn = document.createElement("button");
-    addTaskBtn.className = "add-task-btn";
-    addTaskBtn.id = "add-task-btn";
-    addTaskBtn.innerHTML = `<span class="material-icons">
+    addTaskBtn.className = "button-add-task";
+    addTaskBtn.id = "button-add-task";
+    addTaskBtn.innerHTML = `<p><span class="material-icons">
     add
-    </span>Add Task`;
+    </span>Add Task</p>`;
 
     // appending container children
     container.appendChild(projectName);
