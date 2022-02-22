@@ -26,7 +26,8 @@
     "style-loader": "^3.3.1",
     "webpack": "^5.69.1",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4"
+    "webpack-dev-server": "^4.7.4",
+    "webpack-material-design-icons": "^0.1.0"
   },
   "dependencies": {
     "date-fns": "^2.28.0"
