@@ -1,5 +1,5 @@
 import { add } from "date-fns";
-import { createElt, addEventListenerFunc } from "./dom";
+import { createElt, addListener } from "./dom";
 import Project from "./project";
 import Task from "./task";
 import {
@@ -104,31 +104,6 @@ export default class UI {
 
     // Apending fourth sidebar child
     this.createAddProjectButton(sidebar);
-    // const addProjectBtn = document.createElement("button");
-    // addProjectBtn.className = "button-add-project";
-    // addProjectBtn.id = "button-add-project";
-    // addProjectBtn.innerHTML = `<p><span class="material-icons">
-    // add
-    // </span>Add Project</p>`;
-
-    // addProjectBtn.addEventListener(
-    //   "click",
-    //   () => {
-    //     const project = new Project("project4");
-    //     const task = new Task("title", "desc", "dueDate", "priority");
-    //     const task2 = new Task("title2", "desc2", "dueDate2", "priority2");
-    //     project.addTask(task);
-    //     project.addTask(task2);
-    //     console.log(`project.title: ${project.title}`);
-    //     console.log(`project.id: ${project.id}`);
-    //     console.log(`project.stringifyObject: ${project.stringifyObject()}`);
-    //     saveItem(project.id, project);
-    //     retrieveItem(project.id);
-    //   },
-    //   false
-    // );
-
-    // sidebar.appendChild(addProjectBtn);
 
     // container => child
     const container = document.createElement("div");
@@ -147,12 +122,14 @@ export default class UI {
     taskList.id = "task-list";
 
     // container child
-    const addTaskBtn = this.createAddTaskButton();
+    //const addTaskBtn = this.createAddTaskButton();
+    
 
     // appending container children
     container.appendChild(projectName);
     container.appendChild(taskList);
-    container.appendChild(addTaskBtn);
+    this.createAddTaskButton(container);
+    //container.appendChild(addTaskBtn);
 
     //Appending body children
     body.appendChild(sidebar);
@@ -168,42 +145,39 @@ export default class UI {
   }
 
   createAddProjectButton(parentNode) {
-    const addProjectBtn = document.createElement("button");
-    addProjectBtn.className = "button-add-project";
-    addProjectBtn.id = "button-add-project";
-    addProjectBtn.innerHTML = `<p><span class="material-icons">
-    add
-    </span>Add Project</p>`;
-
-    addProjectBtn.addEventListener(
-      "click",
-      () => {
-        const project = new Project("project4");
-        const task = new Task("title", "desc", "dueDate", "priority");
-        const task2 = new Task("title2", "desc2", "dueDate2", "priority2");
-        project.addTask(task);
-        project.addTask(task2);
-        console.log(`project.title: ${project.title}`);
-        console.log(`project.id: ${project.id}`);
-        console.log(`project.stringifyObject: ${project.stringifyObject()}`);
-        saveItem(project.id, project);
-        retrieveItem(project.id);
-      },
-      false
+    const addProjectBtn = createElt(
+      parentNode,
+      "button",
+      "button-add-project",
+      "button-add-project",
+      `<p><span class="material-icons">
+        add
+      </span>Add Project</p>`
     );
 
-    parentNode.appendChild(addProjectBtn);
+    addListener(addProjectBtn, "click", () => {
+      const project = new Project("project4");
+      saveItem(project.id, project);
+      retrieveItem(project.id);
+    });
   }
 
-  createAddTaskButton() {
-    const addTaskBtn = document.createElement("button");
-    addTaskBtn.className = "button-add-task";
-    addTaskBtn.id = "button-add-task";
-    addTaskBtn.innerHTML = `<p><span class="material-icons">
+  createAddTaskButton(parentNode) {
+    const addTaskBtn = createElt(
+      parentNode,
+      "button",
+      "button-add-task",
+      "button-add-task",
+      `<p><span class="material-icons">
     add
-    </span>Add Task</p>`;
-
-    return addTaskBtn;
+    </span>Add Task</p>`
+    );
+    
+    addListener(addTaskBtn, "click", () => {
+      const task = new Task("title", "desc", "dueDate", "priority");
+      saveItem(task.id, task);
+      retrieveItem(task.id);
+    })
   }
 
   createNewProject(title) {

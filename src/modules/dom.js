@@ -8,13 +8,14 @@ function createElt(parent, type, className, id, innerHTML) {
   let childNode = document.createElement(type);
   childNode.className = className;
   childNode.id = id;
-  childNode = innerHTML;
+  childNode.innerHTML = innerHTML;
   parentNode.appendChild(childNode);
+
+  return childNode;
 }
 
-function addEventListenerFunc(type, listener) {
-  const el = this.returnNodeById(this.id);
-  el.addEventListener(type, listener, false);
+function addListener(obj, type, listener) {
+  obj.addEventListener(type, listener, false);
 }
 
-export {returnNodeById, createElt, addEventListenerFunc}
+export { returnNodeById, createElt, addListener };
