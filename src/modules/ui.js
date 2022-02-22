@@ -14,9 +14,9 @@ export default class UI {
     const logo = document.createElement("div");
     logo.className = "logo";
     logo.id = "logo";
-    logo.innerHTML = `<span class="material-icons">
+    logo.innerHTML = `<p><span class="material-icons">
     done_all
-    </span>ToDo!`;
+    </span>ToDo!</p>`;
 
     header.appendChild(logo);
     document.body.appendChild(header);
@@ -35,6 +35,7 @@ export default class UI {
     // Sidebar children
     // First sidebar child
     const defaultProjectList = document.createElement("div");
+    defaultProjectList.className = "default-project-list";
 
     // first sidebar grandchild
     // const inbox = createElt(
@@ -48,28 +49,28 @@ export default class UI {
     // `
     // );
     const inbox = document.createElement("button");
-    inbox.class = "button-default-project active";
+    inbox.className = "button-default-project";
     inbox.id = "button-inbox-projects";
-    inbox.innerHTML = `<span class="material-icons">
+    inbox.innerHTML = `<p><span class="material-icons">
     inbox
-    </span>Inbox
+    </span>Inbox</p>
     `;
     // second sidebar grandchild
     const today = document.createElement("button");
-    today.class = "button-default-project active";
+    today.className = "button-default-project";
     today.id = "button-today-projects";
-    today.innerHTML = `<span class="material-icons">
+    today.innerHTML = `<p><span class="material-icons">
     today
-    </span>Today
+    </span>Today</p>
     `;
 
     // third sidebar grandchild
     const week = document.createElement("button");
-    week.class = "button-default-project active";
+    week.className = "button-default-project";
     week.id = "button-week-projects";
-    week.innerHTML = `<span class="material-icons">
+    week.innerHTML = `<p><span class="material-icons">
     date_range
-    </span>Week
+    </span>Week</p>
     `;
 
     // Appending sidebar grandchild
@@ -92,7 +93,7 @@ export default class UI {
 
     // Apending fourth sidebar child
     const addProjectBtn = document.createElement("button");
-    addProjectBtn.class = "button-add-project";
+    addProjectBtn.className = "button-add-project";
     addProjectBtn.id = "button-add-project";
     addProjectBtn.innerHTML = `<span class="material-icons">
     add

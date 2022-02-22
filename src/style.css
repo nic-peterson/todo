@@ -85,6 +85,14 @@ body {
   font-weight: 900;
 }
 
+.logo > p > span {
+  font-size: 2rem;
+}
+
+.logo > p {
+  font-size: 3rem;
+}
+
 .body {
   flex: 1;
   display: flex;
@@ -93,6 +101,57 @@ body {
 .sidebar {
   flex-shrink: 0;
   padding: 16px;
+}
+
+.default-project-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-default-project {
+  background-color: var(--secondary-light);
+  text-align: left;
+  vertical-align: middle;
+  border: 0;
+  border-radius: 5px;
+}
+
+.button-default-project > p {
+  font-weight: 900;
+  vertical-align: top;
+}
+
+.button-default-project:hover {
+  background-color: var(--primary-light);
+}
+
+.button-default-project:active {
+  background-color: var(--primary-light);
+}
+
+.button-default-project > p > span {
+  font-size: 1.75rem;
+  vertical-align: middle;
+}
+
+.material-icons {
+  margin-right: 6px;
+}
+
+.projects-title {
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.button-project {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--secondary-light);
+  text-align: left;
 }
 
 .container {
