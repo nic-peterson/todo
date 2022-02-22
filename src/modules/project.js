@@ -1,7 +1,12 @@
 export default class Project {
   constructor(title) {
     this.title = title;
+    this.id = this.generateID(1, 1000000);
     this.tasks = [];
+  }
+
+  generateID(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
   changeTitle(newTitle) {
@@ -11,7 +16,6 @@ export default class Project {
   displayTitle() {
     return this.title;
   }
-
 
   addTask(task) {
     const result = this.tasks;
@@ -26,5 +30,9 @@ export default class Project {
   removeTask(taskToRemove) {
     const result = this.tasks.filter((task) => task !== taskToRemove);
     this.tasks = result;
+  }
+
+  stringifyObject() {
+    return JSON.stringify(this);
   }
 }

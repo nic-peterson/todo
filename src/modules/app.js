@@ -16,6 +16,8 @@ import UI from "./ui";
 function app() {
     const ui = new UI();
     ui.loadPage();
+    const project = new Project();
+    console.log(project.title);
 }
 
 export { app };
