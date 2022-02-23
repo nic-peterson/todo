@@ -16,6 +16,8 @@ export default class UI {
     this.createBody();
     this.createFooter();
     this.retrieveTasks();
+    this.retrieveProjectTasks("387296");
+    this.retrieveProject("387296");
   }
 
   createHeader() {
@@ -121,6 +123,8 @@ export default class UI {
     // container child #2. Shows the tasks list
     // TODO make this dynamic
     const taskList = createElt(container, "div", "task-list", "task-list", "");
+    const taskArr = this.retrieveTasks();
+    this.renderTaskList(taskList, taskArr);
 
     // container child
     // TODO after the task button is clicked, create a modal that adds the task
@@ -193,6 +197,33 @@ export default class UI {
 
   retrieveTasks() {
     const arr = retrieveAllItemsByType("task");
-    console.log(arr);
+    return arr;
+  }
+
+  retrieveProject(id) {
+    const project = retrieveItem(id);
+
+    console.log(project);
+  }
+
+  retrieveProjectTasks(id) {
+    const projectTasks = retrieveItem(id).tasks;
+    console.log(projectTasks);
+  }
+
+  renderTaskList(parentNode, tasks) {
+    if (tasks.length < 1) {
+      return;
+    } else {
+      tasks.forEach((elt) => {
+        const task = createElt(
+          parentNode,
+          "div",
+          "tasks",
+          elt.id,
+          `${elt.title}`
+        );
+      });
+    }
   }
 }

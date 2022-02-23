@@ -24,7 +24,7 @@ function retrieveItem(key) {
   } else {
     const retrievedItem = localStorage.getItem(key);
     console.log(`retrievedItem: ${retrievedItem}`);
-    return retrievedItem;
+    return JSON.parse(retrievedItem);
   }
 }
 
