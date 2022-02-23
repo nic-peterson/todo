@@ -6,6 +6,7 @@ export default class Task {
     this.priority = priority;
     this.id = this.generateID(1, 1000000);
     this.complete = false;
+    this.type = "task";
   }
 
   generateID(min, max) {

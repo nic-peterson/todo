@@ -4,7 +4,7 @@ import Project from "./project";
 import Task from "./task";
 import {
   saveItem,
-  retrieveAllItems,
+  retrieveAllItemsByType,
   retrieveItem,
   removeItem,
   removeAllItems,
@@ -15,6 +15,7 @@ export default class UI {
     this.createHeader();
     this.createBody();
     this.createFooter();
+    this.retrieveTasks();
   }
 
   createHeader() {
@@ -32,20 +33,24 @@ export default class UI {
   }
 
   createBody() {
-    // Body => parent
-    const body = document.createElement("div");
-    body.className = "body";
+    // Body. This the parent container. It has two children: sidebar (listing out projects) and body (listing out tasks)
+    const body = createElt(document.body, "div", "body", "body", "");
 
-    // Sidebar => child
-    const sidebar = document.createElement("div");
-    sidebar.className = "sidebar";
-    sidebar.id = "sidebar";
+    // Sidebar → Body child #1.
+    const sidebar = createElt(body, "div", "sidebar", "sidebar", "");
 
     // Sidebar children
-    // First sidebar child
-    const defaultProjectList = document.createElement("div");
-    defaultProjectList.className = "default-project-list";
 
+    // First sidebar child. Breaks down the default projects: inbox, due today, and due this week
+    const defaultProjectList = createElt(
+      sidebar,
+      "div",
+      "default-project-list",
+      "default-project-list",
+      ""
+    );
+    // sidebar grandchildren
+    // All purpose inbox for capturing default tasks
     const inbox = createElt(
       defaultProjectList,
       "button",
@@ -56,15 +61,7 @@ export default class UI {
     </span>Inbox</p>
     `
     );
-    // const inbox = document.createElement("button");
-    // inbox.className = "button-default-project";
-    // inbox.id = "button-inbox-projects";
-    // inbox.innerHTML = `<p><span class="material-icons">
-    // inbox
-    // </span>Inbox</p>
-    // `;
-    // second sidebar grandchild
-
+    // Shows tasks due today
     const today = createElt(
       defaultProjectList,
       "button",
@@ -75,16 +72,7 @@ export default class UI {
     </span>Today</p>
     `
     );
-    // const today = document.createElement("button");
-    // today.className = "button-default-project";
-    // today.id = "button-today-projects";
-    // today.innerHTML = `<p><span class="material-icons">
-    // today
-    // </span>Today</p>
-    // `;
-
-    // third sidebar grandchild
-
+    // Shows tasks due this week
     const week = createElt(
       defaultProjectList,
       "button",
@@ -96,64 +84,47 @@ export default class UI {
     `
     );
 
-    // const week = document.createElement("button");
-    // week.className = "button-default-project";
-    // week.id = "button-week-projects";
-    // week.innerHTML = `<p><span class="material-icons">
-    // date_range
-    // </span>Week</p>
-    // `;
+    // Second sidebar child - PROJECT. We'll give the user the ability to add/view custom projects below this title
+    const projectsTitle = createElt(
+      sidebar,
+      "div",
+      "projects-title",
+      "projects-title",
+      "Projects"
+    );
 
-    // Appending sidebar grandchild
-    //defaultProjectList.appendChild(inbox);
-    //defaultProjectList.appendChild(today);
-    //defaultProjectList.appendChild(week);
-    sidebar.appendChild(defaultProjectList);
+    // Appending third sidebar child. This element is a container for the users' list of custom projects
+    const projectList = createElt(
+      sidebar,
+      "div",
+      "projects-list",
+      "projects-list",
+      ""
+    );
 
-    // Appending second sidebar child
-    const projectsTitle = document.createElement("div");
-    projectsTitle.className = "projects-title";
-    projectsTitle.textContent = "Projects";
-    sidebar.appendChild(projectsTitle);
+    // Apending fourth sidebar child. The user clicks this button to create new custom projects.
+    const addProjectButton = this.createAddProjectButton(sidebar);
 
-    // Appending third sidebar child
-    const projectsList = document.createElement("div");
-    //const addProject
+    // container → Body child #2
+    const container = createElt(body, "div", "container", "container", "");
 
-    sidebar.appendChild(projectsList);
+    // container child #1. Shows current project name
+    // TODO → will need to make this dynamic based on the project selected
+    const projectname = createElt(
+      container,
+      "div",
+      "project-name",
+      "project-name",
+      "<h1>Inbox</h1>"
+    );
 
-    // Apending fourth sidebar child
-    this.createAddProjectButton(sidebar);
-
-    // container => child
-    const container = document.createElement("div");
-    container.className = "container";
-    container.id = "container";
-
-    // container child
-    const projectName = document.createElement("div");
-    projectName.className = "project-name";
-    projectName.id = "project-name";
-    projectName.innerHTML = "<h1>Inbox</h1>";
+    // container child #2. Shows the tasks list
+    // TODO make this dynamic
+    const taskList = createElt(container, "div", "task-list", "task-list", "");
 
     // container child
-    const taskList = document.createElement("div");
-    taskList.className = "task-list";
-    taskList.id = "task-list";
-
-    // container child
-    //const addTaskBtn = this.createAddTaskButton();
-
-    // appending container children
-    container.appendChild(projectName);
-    container.appendChild(taskList);
-    this.createAddTaskButton(container);
-    //container.appendChild(addTaskBtn);
-
-    //Appending body children
-    body.appendChild(sidebar);
-    body.appendChild(container);
-    document.body.appendChild(body);
+    // TODO after the task button is clicked, create a modal that adds the task
+    const addTaskButton = this.createAddTaskButton(container);
   }
 
   createFooter() {
@@ -176,6 +147,12 @@ export default class UI {
 
     addListener(addProjectBtn, "click", () => {
       const project = new Project("project4");
+      const task = new Task("title1", "desc", "dueDate", "priority");
+      const task1 = new Task("title2", "desc", "dueDate", "priority");
+      const task2 = new Task("title3", "desc", "dueDate", "priority");
+      project.addTask(task);
+      project.addTask(task1);
+      project.addTask(task2);
       saveItem(project.id, project);
       retrieveItem(project.id);
     });
@@ -193,14 +170,29 @@ export default class UI {
     );
 
     addListener(addTaskBtn, "click", () => {
-      const task = new Task("title", "desc", "dueDate", "priority");
-      saveItem(task.id, task);
-      retrieveItem(task.id);
+      //const task = new Task("title", "desc", "dueDate", "priority");
+      //saveItem(task.id, task);
+
+      const task1 = new Task("titl4", "desc", "dueDate", "priority");
+      const task2 = new Task("title5", "desc", "dueDate", "priority");
+      const task3 = new Task("title6", "desc", "dueDate", "priority");
+
+      saveItem(task1.id, task1);
+      retrieveItem(task1.id);
+      saveItem(task2.id, task2);
+      retrieveItem(task2.id);
+      saveItem(task3.id, task3);
+      retrieveItem(task3.id);
     });
   }
 
   createNewProject(title) {
     const project = new Project(title);
     console.log(`project.title: ${project.title}`);
+  }
+
+  retrieveTasks() {
+    const arr = retrieveAllItemsByType("task");
+    console.log(arr);
   }
 }

@@ -1,31 +1,36 @@
 function saveItem(key, value) {
-    localStorage.setItem(key, value);
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
-function retrieveAllItems() {
-    let items = [],
-        keys = Object.keys(localStorage),
-        i = keys.length;
+function retrieveAllItemsByType(type) {
+  console.log(type);
+  let items = [],
+    keys = Object.keys(localStorage),
+    i = keys.length;
+
+  while (i--) {
+    const dataObj = JSON.parse(localStorage.getItem(keys[i]));
+    if(dataObj.type === type){
+      items.push(dataObj);
+    }
     
-        while(i--) {
-            items.push(localStorage.getItem(keys[i]));
-        }
-    return items;
+  }
+  return items;
 }
 
 function retrieveItem(key) {
-    if(!localStorage.getItem(key)) {
-        console.log("That entry doesn't exist!");
-    } else {
-        const retrievedItem = localStorage.getItem(key);
-        console.log(`retrievedItem: ${retrievedItem}`);
-        return retrievedItem;
-    }
+  if (!localStorage.getItem(key)) {
+    console.log("That entry doesn't exist!");
+  } else {
+    const retrievedItem = localStorage.getItem(key);
+    console.log(`retrievedItem: ${retrievedItem}`);
+    return retrievedItem;
+  }
 }
 
 //deletes item from localStorage
 function removeItem(keyName) {
-    localStorage.removeItem(keyName);
+  localStorage.removeItem(keyName);
 }
 
 //clears the entire localStorage
@@ -61,4 +66,11 @@ function storageAvailable(type) {
   }
 }
 
-export { saveItem, retrieveItem, retrieveAllItems, removeItem, removeAllItems, storageAvailable };
+export {
+  saveItem,
+  retrieveItem,
+  retrieveAllItemsByType,
+  removeItem,
+  removeAllItems,
+  storageAvailable,
+};

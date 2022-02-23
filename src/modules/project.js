@@ -3,6 +3,7 @@ export default class Project {
     this.title = title;
     this.id = this.generateID(1, 1000000);
     this.tasks = [];
+    this.type = "project";
   }
 
   generateID(min, max) {
@@ -32,7 +33,4 @@ export default class Project {
     this.tasks = result;
   }
 
-  stringifyObject() {
-    return JSON.stringify(this);
-  }
 }
