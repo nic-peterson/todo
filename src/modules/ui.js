@@ -219,9 +219,24 @@ export default class UI {
         const task = createElt(
           parentNode,
           "div",
-          "tasks",
+          "task",
           elt.id,
-          `${elt.title}`
+          `<div class="task-left">
+          <div class="radio ${elt.priority}">
+            <span class="material-icons"> radio_button_unchecked </span>
+            <span class="material-icons"> radio_button_checked </span>
+          </div>
+          <div class="task-basic-info">
+            <div class="task-title">${elt.title}</div>
+            <div class="task-due-date">${elt.dueDate}</div>
+          </div>
+        </div>
+        <div class="task-right">
+          <div class="edit-task">
+            <span class="material-icons"> edit </span>
+          </div>
+        </div>
+          `
         );
       });
     }
