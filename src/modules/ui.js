@@ -39,7 +39,7 @@ export default class UI {
       `<p><span class="material-icons">
     inbox
     </span>Inbox</p>
-    ` 
+    `
     );
     this.today = createElt(
       this.defaultProjectList,
@@ -59,7 +59,8 @@ export default class UI {
       `<p><span class="material-icons">
     date_range
     </span>Week</p>
-    `);
+    `
+    );
     this.projectsTitle = createElt(
       this.sidebar,
       "div",
@@ -83,148 +84,31 @@ export default class UI {
       "project-name",
       "<h1>Inbox</h1>"
     );
-    this.taskList = createElt(this.container, "div", "task-list", "task-list", "");
+    this.taskList = createElt(
+      this.container,
+      "div",
+      "task-list",
+      "task-list",
+      ""
+    );
     this.taskArr = this.retrieveTasks();
     this.addTaskButton = this.createAddTaskButton(this.container);
   }
 
   loadPage() {
-    //this.createHeader();
-    this.createBody();
-    this.createFooter();
-    this.retrieveTasks();
-    this.retrieveProjectTasks("387296");
-    this.retrieveProject("387296");
-  }
-
-  createHeader() {
-    // const header = createElt(document.body, "div", "header", "header", "");
-
-    // const logo = createElt(
-    //   header,
-    //   "div",
-    //   "logo",
-    //   "logo",
-    //   `<p><span class="material-icons">
-    // done_all
-    // </span>ToDo!</p>`
-    // );
-  }
-
-  createBody() {
-    // Body. This the parent container. It has two children: sidebar (listing out projects) and body (listing out tasks)
-    //const body = createElt(document.body, "div", "body", "body", "");
-
-    // Sidebar → Body child #1.
-    //const sidebar = createElt(body, "div", "sidebar", "sidebar", "");
-
-    // Sidebar children
-
-    // First sidebar child. Breaks down the default projects: inbox, due today, and due this week
-    /*
-    const defaultProjectList = createElt(
-      sidebar,
-      "div",
-      "default-project-list",
-      "default-project-list",
-      ""
-    );
-    */
-    // sidebar grandchildren
-    // All purpose inbox for capturing default tasks
-    /*
-    const inbox = createElt(
-      defaultProjectList,
-      "button",
-      "button-default-project",
-      "button-inbox-projects",
-      `<p><span class="material-icons">
-    inbox
-    </span>Inbox</p>
-    `
-    );
-    */
-    // Shows tasks due today
-    /*
-    const today = createElt(
-      defaultProjectList,
-      "button",
-      "button-default-project",
-      "button-today-project",
-      `<p><span class="material-icons">
-    today
-    </span>Today</p>
-    `
-    );
-    */
-    // Shows tasks due this week
-    /*
-    const week = createElt(
-      defaultProjectList,
-      "button",
-      "button-default-project",
-      "button-week-projects",
-      `<p><span class="material-icons">
-    date_range
-    </span>Week</p>
-    `
-    );
-      */
-    // Second sidebar child - PROJECT. We'll give the user the ability to add/view custom projects below this title
-    /*
-    const projectsTitle = createElt(
-      sidebar,
-      "div",
-      "projects-title",
-      "projects-title",
-      "Projects"
-    );
-    */
-
-    // Appending third sidebar child. This element is a container for the users' list of custom projects
-    /*
-    const projectList = createElt(
-      sidebar,
-      "div",
-      "projects-list",
-      "projects-list",
-      ""
-    );
-    */
-
-    // Apending fourth sidebar child. The user clicks this button to create new custom projects.
-    //const addProjectButton = this.createAddProjectButton(this.sidebar);
-
-    // container → Body child #2
-    //const container = createElt(body, "div", "container", "container", "");
-
-    // container child #1. Shows current project name
-    // TODO → will need to make this dynamic based on the project selected
-    /*
-    const projectname = createElt(
-      container,
-      "div",
-      "project-name",
-      "project-name",
-      "<h1>Inbox</h1>"
-    );
-    */
-
-    // container child #2. Shows the tasks list
-    // TODO make this dynamic
-    //const taskList = createElt(container, "div", "task-list", "task-list", "");
-    //const taskArr = this.retrieveTasks();
+    this.clearTaskList();
     this.renderTaskList(this.taskList, this.taskArr);
+    this.createFooter();
+  }
 
-    // container child
-    // TODO after the task button is clicked, create a modal that adds the task
-    //const addTaskButton = this.createAddTaskButton(container);
+  refreshPage() {
+    this.clearTaskList();
+    this.renderTaskList(this.taskList, this.taskArr);
   }
 
   createFooter() {
     const footer = document.createElement("div");
     footer.className = "footer";
-
     document.body.appendChild(footer);
   }
 
@@ -263,21 +147,7 @@ export default class UI {
     </span>Add Task</p>`
     );
 
-    addListener(addTaskBtn, "click", () => {
-      //const task = new Task("title", "desc", "dueDate", "priority");
-      //saveItem(task.id, task);
-
-      const task1 = new Task("titl4", "desc", "dueDate", "priority");
-      const task2 = new Task("title5", "desc", "dueDate", "priority");
-      const task3 = new Task("title6", "desc", "dueDate", "priority");
-
-      saveItem(task1.id, task1);
-      retrieveItem(task1.id);
-      saveItem(task2.id, task2);
-      retrieveItem(task2.id);
-      saveItem(task3.id, task3);
-      retrieveItem(task3.id);
-    });
+    addListener(addTaskBtn, "click", this.createTask());
   }
 
   createNewProject(title) {
@@ -301,7 +171,13 @@ export default class UI {
     console.log(projectTasks);
   }
 
-  clear(parentNode) {}
+  clearTaskList() {
+    document.querySelectorAll(".task").forEach((e) => {
+      console.log(e);
+      console.log(e.parentNode);
+      e.parentNode.removeChild(e);
+    });
+  }
 
   renderTaskList(parentNode, tasks) {
     if (tasks.length < 1) {
@@ -333,6 +209,9 @@ export default class UI {
         );
         addListener(returnNodeById(`complete-task-${elt.id}`), "click", () => {
           console.log(`complete-task-${elt.id}`);
+          this.completeTask(elt.id);
+          // console.log("calling clearTaskList");
+          // this.clearTaskList(this.taskList);
         });
         addListener(returnNodeById(`edit-task-${elt.id}`), "click", () => {
           console.log(`edit-task-${elt.id}`);
@@ -342,5 +221,40 @@ export default class UI {
         });
       });
     }
+  }
+
+  createTask() {
+    return function () {
+      const task1 = new Task(
+        "Pick up milk",
+        "From Safeway",
+        "02/25/2022",
+        "mid"
+      );
+      const task2 = new Task(
+        "Finish chapter 2",
+        "Of Mice & Men",
+        "02/26/2022",
+        "low"
+      );
+      const task3 = new Task(
+        "Do the dishes",
+        "Fromo this afternoon & dinner",
+        "02/24/2022",
+        "high"
+      );
+
+      saveItem(task1.id, task1);
+      retrieveItem(task1.id);
+      saveItem(task2.id, task2);
+      retrieveItem(task2.id);
+      saveItem(task3.id, task3);
+      retrieveItem(task3.id);
+    };
+  }
+
+  completeTask(taskID) {
+    removeItem(taskID);
+    this.refreshPage();
   }
 }

@@ -227,3 +227,15 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.high {
+  color: red;
+}
+
+.mid {
+  color: orange;
+}
+
+.low {
+  color: blue;
+}
