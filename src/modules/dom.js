@@ -15,7 +15,8 @@ function createElt(parent, type, className, id, innerHTML) {
 }
 
 function addListener(obj, type, listener) {
-  obj.addEventListener(type, listener, false);
+  obj.addEventListener(type, listener);
 }
+
 
 export { returnNodeById, createElt, addListener };

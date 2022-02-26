@@ -3,7 +3,6 @@ function saveItem(key, value) {
 }
 
 function retrieveAllItemsByType(type) {
-  console.log(type);
   let items = [],
     keys = Object.keys(localStorage),
     i = keys.length;

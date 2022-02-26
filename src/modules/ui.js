@@ -1,5 +1,5 @@
 import { add } from "date-fns";
-import { createElt, addListener, returnNodeById } from "./dom";
+import { createElt, addListener, returnNodeById, render } from "./dom";
 import Project from "./project";
 import Task from "./task";
 import {
@@ -96,14 +96,15 @@ export default class UI {
   }
 
   loadPage() {
-    this.clearTaskList();
+    //render(this.taskList);
     this.renderTaskList(this.taskList, this.taskArr);
     this.createFooter();
   }
 
   refreshPage() {
+    //render(this.taskList);
     this.clearTaskList();
-    this.renderTaskList(this.taskList, this.taskArr);
+    //this.renderTaskList(this.taskList, this.taskArr);
   }
 
   createFooter() {
@@ -172,11 +173,16 @@ export default class UI {
   }
 
   clearTaskList() {
-    document.querySelectorAll(".task").forEach((e) => {
-      console.log(e);
-      console.log(e.parentNode);
-      e.parentNode.removeChild(e);
-    });
+    console.log("clearTaskList");
+    console.log("this.taskList: ");
+    console.log(this.taskList);
+    while (this.taskList.firstElementChild) {
+      console.log(
+        `Before CALL - this.task.firstElementChild: ${this.task.firstElementChild}`
+      );
+      this.taskList.removeChild(this.taskList.firstElementChild);
+      console.log(`After CALL - this.task.firstElementChild: ${this.task.firstElementChild}`);
+    }
   }
 
   renderTaskList(parentNode, tasks) {
@@ -254,7 +260,8 @@ export default class UI {
   }
 
   completeTask(taskID) {
+    const completedTask = returnNodeById(taskID);
+    completedTask.remove();
     removeItem(taskID);
-    this.refreshPage();
   }
 }
