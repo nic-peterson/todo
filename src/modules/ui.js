@@ -1,5 +1,5 @@
 import { add } from "date-fns";
-import { createElt, addListener, returnNodeById, render } from "./dom";
+import { createElt, addListener, returnNodeById } from "./dom";
 import Project from "./project";
 import Task from "./task";
 import {
@@ -93,18 +93,18 @@ export default class UI {
     );
     this.taskArr = this.retrieveTasks();
     this.addTaskButton = this.createAddTaskButton(this.container);
+    this.completeTask = this.completeTask.bind(this);
+    this.createTask = this.createTask.bind(this);
   }
 
   loadPage() {
-    //render(this.taskList);
     this.renderTaskList(this.taskList, this.taskArr);
     this.createFooter();
   }
 
   refreshPage() {
-    //render(this.taskList);
     this.clearTaskList();
-    //this.renderTaskList(this.taskList, this.taskArr);
+    this.renderTaskList(this.taskList, this.taskArr);
   }
 
   createFooter() {
@@ -147,8 +147,9 @@ export default class UI {
     add
     </span>Add Task</p>`
     );
-
-    addListener(addTaskBtn, "click", this.createTask());
+    
+    addTaskBtn.addEventListener("click", this.createTask());
+    //addListener(addTaskBtn, "click", this.createTask());
   }
 
   createNewProject(title) {
@@ -173,16 +174,18 @@ export default class UI {
   }
 
   clearTaskList() {
-    console.log("clearTaskList");
-    console.log("this.taskList: ");
-    console.log(this.taskList);
-    while (this.taskList.firstElementChild) {
-      console.log(
-        `Before CALL - this.task.firstElementChild: ${this.task.firstElementChild}`
-      );
-      this.taskList.removeChild(this.taskList.firstElementChild);
-      console.log(`After CALL - this.task.firstElementChild: ${this.task.firstElementChild}`);
-    }
+    // console.log("clearTaskList");
+    // console.log("this.taskList: ");
+    // console.log(this.taskList);
+    // while (this.taskList.firstElementChild) {
+    //   console.log(
+    //     `Before CALL - this.task.firstElementChild: ${this.task.firstElementChild}`
+    //   );
+    //   this.taskList.removeChild(this.taskList.firstElementChild);
+    //   console.log(
+    //     `After CALL - this.task.firstElementChild: ${this.task.firstElementChild}`
+    //   );
+    // }
   }
 
   renderTaskList(parentNode, tasks) {
@@ -190,72 +193,221 @@ export default class UI {
       return;
     } else {
       tasks.forEach((elt) => {
-        const task = createElt(
-          parentNode,
-          "div",
-          "task",
-          elt.id,
-          `<div class="task-left">
-          <div class="radio ${elt.priority}" id="complete-task-${elt.id}">
-            <span class="material-icons"> radio_button_unchecked </span>
-          </div>
-          <div class="task-basic-info">
-            <div class="task-title">${elt.title}</div>
-            <div class="task-due-date">${elt.dueDate}</div>
-          </div>
-        </div>
-        <div class="task-right">
-          <div class="edit-task" id="edit-task-${elt.id}">
-            <span class="material-icons"> edit </span>
-          </div>
-          <div class="delete-task" id="delete-task-${elt.id}">
-            <span class="material-icons"> close </span>
-        </div>
-          `
-        );
-        addListener(returnNodeById(`complete-task-${elt.id}`), "click", () => {
-          console.log(`complete-task-${elt.id}`);
-          this.completeTask(elt.id);
-          // console.log("calling clearTaskList");
-          // this.clearTaskList(this.taskList);
-        });
-        addListener(returnNodeById(`edit-task-${elt.id}`), "click", () => {
-          console.log(`edit-task-${elt.id}`);
-        });
-        addListener(returnNodeById(`delete-task-${elt.id}`), "click", () => {
-          console.log(`delete-task-${elt.id}`);
-        });
+        const task = this.createTaskDomElt(parentNode, elt);
+        // const task = createElt(
+        //   parentNode,
+        //   "div",
+        //   "task",
+        //   elt.id,
+        //   `<div class="task-left">
+        //   <div class="radio ${elt.priority}" id="complete-task-${elt.id}">
+        //     <span class="material-icons"> radio_button_unchecked </span>
+        //   </div>
+        //   <div class="task-basic-info">
+        //     <div class="task-title">${elt.title}</div>
+        //     <div class="task-due-date">${elt.dueDate}</div>
+        //   </div>
+        // </div>
+        // <div class="task-right">
+        //   <div class="edit-task" id="edit-task-${elt.id}">
+        //     <span class="material-icons"> edit </span>
+        //   </div>
+        //   <div class="delete-task" id="delete-task-${elt.id}">
+        //     <span class="material-icons"> close </span>
+        // </div>
+        //   `
+        // );
+        // addListener(returnNodeById(`complete-task-${elt.id}`), "click", () => {
+        //   console.log(`complete-task-${elt.id}`);
+        //   this.completeTask(elt.id);
+        //   // console.log("calling clearTaskList");
+        //   // this.clearTaskList(this.taskList);
+        // });
+        // addListener(returnNodeById(`edit-task-${elt.id}`), "click", () => {
+        //   console.log(`edit-task-${elt.id}`);
+        // });
+        // addListener(returnNodeById(`delete-task-${elt.id}`), "click", () => {
+        //   console.log(`delete-task-${elt.id}`);
+        // });
       });
     }
   }
 
+  createTaskDomElt(parentNode, elt) {
+    const taskHtmlElt = createElt(
+      parentNode,
+      "div",
+      "task",
+      elt.id,
+      `<div class="task-left">
+      <div class="radio ${elt.priority}" id="complete-task-${elt.id}">
+        <span class="material-icons"> radio_button_unchecked </span>
+      </div>
+      <div class="task-basic-info">
+        <div class="task-title">${elt.title}</div>
+        <div class="task-due-date">${elt.dueDate}</div>
+      </div>
+    </div>
+    <div class="task-right">
+      <div class="edit-task" id="edit-task-${elt.id}">
+        <span class="material-icons"> edit </span>
+      </div>
+      <div class="delete-task" id="delete-task-${elt.id}">
+        <span class="material-icons"> close </span>
+    </div>
+      `
+    );
+
+    addListener(returnNodeById(`complete-task-${elt.id}`), "click", () => {
+      console.log(`complete-task-${elt.id}`);
+      this.completeTask(elt.id);
+      console.log("calling clearTaskList");
+      this.clearTaskList(this.taskList);
+    });
+    addListener(returnNodeById(`edit-task-${elt.id}`), "click", () => {
+      console.log(`edit-task-${elt.id}`);
+    });
+    addListener(returnNodeById(`delete-task-${elt.id}`), "click", () => {
+      console.log(`delete-task-${elt.id}`);
+    });
+    //return taskHTMLElt
+  }
+
   createTask() {
     return function () {
+      const taskList = returnNodeById("task-list");
       const task1 = new Task(
         "Pick up milk",
         "From Safeway",
         "02/25/2022",
         "mid"
       );
+      createElt(
+        taskList,
+        "div",
+        "task",
+        task1.id,
+        `<div class="task-left">
+        <div class="radio ${task1.priority}" id="complete-task-${task1.id}">
+          <span class="material-icons"> radio_button_unchecked </span>
+        </div>
+        <div class="task-basic-info">
+          <div class="task-title">${task1.title}</div>
+          <div class="task-due-date">${task1.dueDate}</div>
+        </div>
+      </div>
+      <div class="task-right">
+        <div class="edit-task" id="edit-task-${task1.id}">
+          <span class="material-icons"> edit </span>
+        </div>
+        <div class="delete-task" id="delete-task-${task1.id}">
+          <span class="material-icons"> close </span>
+      </div>
+        `
+      );
+
+      addListener(returnNodeById(`complete-task-${task1.id}`), "click", () => {
+        console.log(`complete-task-${task1.id}`);
+        console.log(this);
+        this.completeTask(task1.id);
+      });
+      addListener(returnNodeById(`edit-task-${task1.id}`), "click", () => {
+        console.log(`edit-task-${task1.id}`);
+      });
+      addListener(returnNodeById(`delete-task-${task1.id}`), "click", () => {
+        console.log(`delete-task-${task1.id}`);
+      });
       const task2 = new Task(
         "Finish chapter 2",
         "Of Mice & Men",
         "02/26/2022",
         "low"
       );
+      createElt(
+        taskList,
+        "div",
+        "task",
+        task2.id,
+        `<div class="task-left">
+        <div class="radio ${task2.priority}" id="complete-task-${task2.id}">
+          <span class="material-icons"> radio_button_unchecked </span>
+        </div>
+        <div class="task-basic-info">
+          <div class="task-title">${task2.title}</div>
+          <div class="task-due-date">${task2.dueDate}</div>
+        </div>
+      </div>
+      <div class="task-right">
+        <div class="edit-task" id="edit-task-${task2.id}">
+          <span class="material-icons"> edit </span>
+        </div>
+        <div class="delete-task" id="delete-task-${task2.id}">
+          <span class="material-icons"> close </span>
+      </div>
+        `
+      );
+      addListener(returnNodeById(`complete-task-${task2.id}`), "click", () => {
+        console.log(`complete-task-${task2.id}`);
+        this.completeTask(task2.id);
+      });
+      addListener(returnNodeById(`edit-task-${task2.id}`), "click", () => {
+        console.log(`edit-task-${task2.id}`);
+      });
+      addListener(returnNodeById(`delete-task-${task2.id}`), "click", () => {
+        console.log(`delete-task-${task2.id}`);
+      });
       const task3 = new Task(
         "Do the dishes",
         "Fromo this afternoon & dinner",
         "02/24/2022",
         "high"
       );
+      createElt(
+        taskList,
+        "div",
+        "task",
+        task3.id,
+        `<div class="task-left">
+        <div class="radio ${task3.priority}" id="complete-task-${task3.id}">
+          <span class="material-icons"> radio_button_unchecked </span>
+        </div>
+        <div class="task-basic-info">
+          <div class="task-title">${task3.title}</div>
+          <div class="task-due-date">${task3.dueDate}</div>
+        </div>
+      </div>
+      <div class="task-right">
+        <div class="edit-task" id="edit-task-${task3.id}">
+          <span class="material-icons"> edit </span>
+        </div>
+        <div class="delete-task" id="delete-task-${task3.id}">
+          <span class="material-icons"> close </span>
+      </div>
+        `
+      );
+      addListener(returnNodeById(`complete-task-${task3.id}`), "click", () => {
+        console.log(`complete-task-${task3.id}`);
+        this.completeTask(task3.id);
+        
+      });
+      addListener(returnNodeById(`edit-task-${task3.id}`), "click", () => {
+        console.log(`edit-task-${task3.id}`);
+      });
+      addListener(returnNodeById(`delete-task-${task3.id}`), "click", () => {
+        console.log(`delete-task-${task3.id}`);
+      });
 
       saveItem(task1.id, task1);
       retrieveItem(task1.id);
+      //const task1Elt = createTaskDomElt(this.taskList, task1);
       saveItem(task2.id, task2);
       retrieveItem(task2.id);
+      //const task2Elt = createTaskDomElt(this.taskList, task2);
       saveItem(task3.id, task3);
       retrieveItem(task3.id);
+      //const task3Elt = createTaskDomElt(this.taskList, task3);
+
+      //this.refreshPage();
     };
   }
 
