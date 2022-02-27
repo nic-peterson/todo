@@ -1,4 +1,4 @@
-export default class Task {
+class Task {
   constructor(title, description, dueDate, priority) {
     this.title = title;
     this.description = description;
@@ -36,8 +36,6 @@ export default class Task {
   changePriority(input) {
     return (this.priority = input);
   }
-
-  stringifyObject() {
-    return JSON.stringify(this);
-  }
 }
+
+export { Task };

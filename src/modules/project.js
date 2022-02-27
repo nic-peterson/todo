@@ -1,4 +1,4 @@
-export default class Project {
+class Project {
   constructor(title) {
     this.title = title;
     this.id = this.generateID(1, 1000000);
@@ -34,3 +34,11 @@ export default class Project {
   }
 
 }
+
+function addProject() {
+  console.log("adding project!")
+}
+
+
+
+export {Project, addProject}
