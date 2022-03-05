@@ -13,7 +13,7 @@ function isEmpty() {
 function isTypeEmpty(type) {
   let boolFlag = true;
   const typeArr = retrieveAllItemsByType(type);
-  if (typeArr > 0) {
+  if (typeArr.length > 0) {
     boolFlag = false;
   }
   return boolFlag;

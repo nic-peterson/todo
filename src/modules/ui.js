@@ -1,7 +1,9 @@
 import { createElt, addListener, returnNodeById } from "./domFunctions";
 import { Project, addProject } from "./project";
-
+import { Logic } from "./logic";
+ 
 const initialLoad = function () {
+  const logic = new Logic();
   header();
   body();
   footer();

@@ -1,8 +1,7 @@
 class Project {
-  constructor(title) {
+  constructor(title="Inbox") {
     this.title = title;
     this.id = this.generateID(1, 1000000);
-    this.tasks = [];
     this.type = "project";
   }
 
@@ -18,25 +17,15 @@ class Project {
     return this.title;
   }
 
-  addTask(task) {
-    const result = this.tasks;
-    result.push(task);
-    this.tasks = result;
-  }
-
-  displayTasks() {
-    return this.tasks;
-  }
-
-  removeTask(taskToRemove) {
-    const result = this.tasks.filter((task) => task !== taskToRemove);
-    this.tasks = result;
-  }
-
 }
 
-function addProject() {
+function addProject(body) {
   console.log("adding project!")
+}
+
+function projectForm() {
+  const form = document.createElement("form");
+
 }
 
 
