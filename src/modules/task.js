@@ -1,5 +1,5 @@
 class Task {
-  constructor(title, description, dueDate, priority) {
+  constructor(title, description, dueDate, priority, project) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -7,6 +7,7 @@ class Task {
     this.id = this.generateID(1, 1000000);
     this.complete = false;
     this.type = "task";
+    this.project = project;
   }
 
   generateID(min, max) {
@@ -18,23 +19,23 @@ class Task {
   }
 
   toggleComplete() {
-    return (this.complete = !this.complete);
+    this.complete = !this.complete;
   }
 
-  changeTitle(input) {
-    return (this.title = input);
+  changeTitle(newTitle) {
+    this.title = newTitle;
   }
 
-  changeDescrption(input) {
-    return (this.description = input);
+  changeDescrption(newDesc) {
+    this.description = newDesc;
   }
 
-  changeDueDate(input) {
-    return (this.dueDate = input);
+  changeDueDate(newDueDate) {
+    this.dueDate = newDueDate;
   }
 
-  changePriority(input) {
-    return (this.priority = input);
+  changePriority(newPriority) {
+    this.priority = newPriority;
   }
 }
 
