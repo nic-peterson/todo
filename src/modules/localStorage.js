@@ -2,6 +2,34 @@ function saveItem(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
+function isEmpty() {
+  let boolFlag = true;
+  if (Object.keys(localStorage).length > 0) {
+    boolFlag = false;
+  }
+  return boolFlag;
+}
+
+function isTypeEmpty(type) {
+  let boolFlag = true;
+  const typeArr = retrieveAllItemsByType(type);
+  if (typeArr > 0) {
+    boolFlag = false;
+  }
+  return boolFlag;
+}
+
+function retrieveAllItems() {
+  let items = [],
+    keys = Object.keys(localStorage),
+    i = keys.length;
+
+  while (i--) {
+    items.push(keys[i]);
+  }
+  return items;
+}
+
 function retrieveAllItemsByType(type) {
   let items = [],
     keys = Object.keys(localStorage),
@@ -9,10 +37,9 @@ function retrieveAllItemsByType(type) {
 
   while (i--) {
     const dataObj = JSON.parse(localStorage.getItem(keys[i]));
-    if(dataObj.type === type){
+    if (dataObj.type === type) {
       items.push(dataObj);
     }
-    
   }
   return items;
 }
@@ -67,7 +94,10 @@ function storageAvailable(type) {
 
 export {
   saveItem,
+  isEmpty,
+  isTypeEmpty,
   retrieveItem,
+  retrieveAllItems,
   retrieveAllItemsByType,
   removeItem,
   removeAllItems,
