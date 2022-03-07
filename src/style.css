@@ -108,6 +108,44 @@ body {
   flex-direction: column;
 }
 
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.project-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 0.5rem;
+  border-radius: 5px;
+  padding: 0.5rem 0;
+  font-size: 1.15rem;
+  cursor: pointer;
+}
+
+.project-item-icon-and-name {
+  display: flex;
+  align-items: center;
+}
+
+.project-item-edit-and-delete {
+  display: none;
+}
+
+.project-item:hover .project-item-edit-and-delete {
+  display: flex;
+  align-items: center;
+  
+}
+
+
+
+.project-item:hover {
+  background-color: var(--primary-light);
+}
 .button-default-project,
 .button-add-project {
   background-color: var(--secondary-light);
@@ -183,7 +221,7 @@ body {
   outline: none;
 }
 .add-project-popup-buttons {
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 }
 
 .button-project-popup {

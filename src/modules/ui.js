@@ -12,6 +12,7 @@ import {
   submitProject,
 } from "./project";
 import { Logic } from "./logic";
+import { retrieveAllItemsByType, retrieveItem } from "./localStorage";
 
 const logic = new Logic();
 
@@ -100,6 +101,60 @@ function projects(sidebar) {
     ""
   );
 
+  console.log(projectList);
+
+  const popuplateProjectList = () => {
+    const projectArr = retrieveAllItemsByType("project");
+    console.log(projectList);
+    console.log(projectArr);
+    projectArr.forEach((project) => {
+      if (project.title !== "Inbox") {
+        createElt(
+          projectList,
+          "div",
+          "project-item",
+          `project-item-${project.id}`,
+          `<div class="project-item-icon-and-name">
+          <span class="material-icons">
+            list
+          </span>
+          ${project.title} 
+          </div>
+          <div class="project-item-edit-and-delete" id="project-item-edit-and-delete-${project.id}">
+          <div class="project-item-edit" id="project-item-edit-${project.id}">
+            <span class="material-icons">
+              edit
+            </span>
+          </div>
+          <div class="project-item-delete" id="project-item-delete-${project.id}">
+            <span class="material-icons">
+              close
+            </span>
+          </div>
+          </div>
+          `
+        );
+        
+        addListener(
+          returnNodeById(`project-item-edit-${project.id}`),
+          "click", 
+          () => {
+            console.log("edit project!");
+          }
+        )
+        addListener(
+          returnNodeById(`project-item-delete-${project.id}`),
+          "click",
+          () => {
+            console.log("delete project!");
+          }
+        );
+      }
+    });
+  };
+
+  popuplateProjectList();
+
   const addProjectBtn = createElt(
     sidebar,
     "button",
@@ -125,8 +180,6 @@ function projects(sidebar) {
       </button>
     </div>`
   );
-
-  console.log(addProjectPopUp);
 
   addListener(inbox, "click", () => {
     logic.setLiveProject("Inbox");
