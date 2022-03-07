@@ -5,6 +5,8 @@ import {
   retrieveAllItemsByType,
   retrieveItem,
   saveItem,
+  doesItemExist,
+  searchItem,
 } from "./localStorage";
 import { Project } from "./project";
 
@@ -12,7 +14,7 @@ class Logic {
   constructor() {
     this.tasks = this.returnType("task");
     this.projects = this.returnType("project");
-    this.liveProjectID = this.returnLiveProject();
+    this.liveProject = this.intializeProject();
   }
 
   returnType(type) {
@@ -22,28 +24,36 @@ class Logic {
     return retrieveAllItemsByType(type);
   }
 
-  setLiveProject(projectID) {
-    const lsArr = retrieveAllItemsByType("project");
-    if (lsArr.includes(projectID)) {
-      this.liveProject = projectID;
+  setLiveProject(projectName) {
+    const searchObj = searchItem(projectName);
+    // const searchObj = retrieveAllItemsByType("project").find(
+    //   (obj) => obj.title === projectName
+    // );
+    if (searchObj) {
+      this.liveProject = searchObj;
+    } else if (projectName === "Today" || projectName === "Week") {
+      this.liveProject = { title: projectName };
     } else {
       console.log("That project doesn't exist!");
     }
   }
 
-  returnLiveProject() {
+  returnProject() {
+    return this.liveProject;
+  }
+
+  intializeProject() {
+    let inboxProject;
     if (isTypeEmpty("project") !== true) {
-      console.log("yooo!");
-      const lsArr = retrieveAllItemsByType("project");
-      const inboxProject = lsArr.filter((item) => item.title === "Inbox");
-      return inboxProject.id;
+      inboxProject = searchItem("Inbox");
+      // const lsArr = retrieveAllItemsByType("project");
+      // inboxProject = lsArr.find((obj) => obj.title === "Inbox");
+      //lsArr.filter((item) => item.title === "Inbox")[0];
     } else {
-      console.log(isTypeEmpty("project"));
-      console.log(retrieveAllItemsByType("project"));
-      const inbox = new Project("Inbox");
-      saveItem(inbox.id, inbox);
-      return inbox.id;
+      inboxProject = new Project("Inbox");
+      saveItem(inboxProject.id, inboxProject);
     }
+    return inboxProject;
   }
 }
 

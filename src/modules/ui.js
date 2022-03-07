@@ -1,15 +1,27 @@
-import { createElt, addListener, returnNodeById } from "./domFunctions";
-import { Project, addProject } from "./project";
+import {
+  createElt,
+  addListener,
+  returnNodeById,
+  clear,
+  render,
+} from "./domFunctions";
+import {
+  Project,
+  addProject,
+  cancelAddProject,
+  submitProject,
+} from "./project";
 import { Logic } from "./logic";
- 
+
+const logic = new Logic();
+
 const initialLoad = function () {
-  const logic = new Logic();
   header();
   body();
   footer();
 };
 
-const header = () => {
+function header() {
   const header = createElt(document.body, "div", "header", "header", "");
   const logo = createElt(
     header,
@@ -20,20 +32,20 @@ const header = () => {
     done_all
     </span>ToDo!</p>`
   );
-};
+}
 
-const body = () => {
+function body() {
   const body = createElt(document.body, "div", "body", "body", "");
   sidebar(body);
   container(body);
-};
+}
 
-const sidebar = (body) => {
+function sidebar(body) {
   const sidebar = createElt(body, "div", "sidebar", "sidebar", "");
   projects(sidebar);
-};
+}
 
-const projects = (sidebar) => {
+function projects(sidebar) {
   const defaultProjectList = createElt(
     sidebar,
     "div",
@@ -98,21 +110,88 @@ const projects = (sidebar) => {
     </span>Add Project</p>`
   );
 
-  addListener(addProjectBtn, "click", addProject);
-};
+  const addProjectPopUp = createElt(
+    sidebar,
+    "div",
+    "add-project-popup",
+    "add-project-popup",
+    `<input class="input-add-project-popup" id="input-add-project-popup" type="text">
+    <div class="add-project-popup-buttons">
+      <button class="button-project-popup-add button-project-popup" id="button-project-popup-add">
+        Add
+      </button>
+      <button class="button-project-popup-cancel button-project-popup" id="button-project-popup-cancel">
+        Cancel
+      </button>
+    </div>`
+  );
 
-const container = (body) => {
-  const container = createElt(body, "div", "container", "container", "");
+  console.log(addProjectPopUp);
+
+  addListener(inbox, "click", () => {
+    logic.setLiveProject("Inbox");
+    clear(returnNodeById("container"));
+    container(returnNodeById("body"));
+  });
+  addListener(today, "click", () => {
+    logic.setLiveProject("Today");
+    clear(returnNodeById("container"));
+    container(returnNodeById("body"));
+  });
+  addListener(week, "click", () => {
+    logic.setLiveProject("Week");
+    clear(returnNodeById("container"));
+    container(returnNodeById("body"));
+  });
+  addListener(addProjectBtn, "click", addProject);
+  addListener(
+    returnNodeById("button-project-popup-cancel"),
+    "click",
+    cancelAddProject
+  );
+  addListener(returnNodeById("button-project-popup-add"), "click", () => {
+    const newProject = returnNodeById("input-add-project-popup").value;
+    console.log(newProject);
+    submitProject(newProject);
+    logic.setLiveProject(newProject);
+    clear(returnNodeById("sidebar"));
+    projects(returnNodeById("sidebar"));
+  });
+  /*
+  () => {
+    const addProjectBtn = returnNodeById("button-add-project");
+    addProjectBtn.style.display = "block";
+
+    const input = returnNodeById("input-add-project-popup");
+    input.value = "";
+
+    const popUpDiv = returnNodeById("add-project-popup");
+    popUpDiv.classList.remove("add-project-popup-active");
+    popUpDiv.classList.add("add-project-popup");
+  }
+   */
+}
+
+function container(body) {
+  if (!returnNodeById("container")) {
+    const container = createElt(body, "div", "container", "container", "");
+  }
   const projectname = createElt(
-    container,
+    returnNodeById("container"),
     "div",
     "project-name",
     "project-name",
-    "<h1>Inbox</h1>"
+    `<h1>${logic.returnProject().title}</h1>`
   );
-  const taskList = createElt(container, "div", "task-list", "task-list", "");
+  const taskList = createElt(
+    returnNodeById("container"),
+    "div",
+    "task-list",
+    "task-list",
+    ""
+  );
   const addTaskBtn = createElt(
-    container,
+    returnNodeById("container"),
     "button",
     "button-add-task",
     "button-add-task",
@@ -120,10 +199,10 @@ const container = (body) => {
   add
   </span>Add Task</p>`
   );
-};
+}
 
-const footer = () => {
+function footer() {
   const footer = createElt(document.body, "div", "footer", "footer", "");
-};
+}
 
 export { initialLoad };

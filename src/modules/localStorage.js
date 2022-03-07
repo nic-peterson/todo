@@ -44,9 +44,30 @@ function retrieveAllItemsByType(type) {
   return items;
 }
 
+function doesItemExist(item) {
+  const lsArr = retrieveAllItemsByType("project");
+  const returnTarget = lsArr.find(
+    (obj) => obj.title.toLowerCase() === item.toLowerCase()
+  );
+  if (returnTarget) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function searchItem(target) {
+  const lsArr = retrieveAllItemsByType("project");
+  const returnTarget = lsArr.find(
+    (obj) => obj.title.toLowerCase() === target.toLowerCase()
+  );
+  return returnTarget;
+}
+
 function retrieveItem(key) {
   if (!localStorage.getItem(key)) {
     console.log("That entry doesn't exist!");
+    return null;
   } else {
     const retrievedItem = localStorage.getItem(key);
     console.log(`retrievedItem: ${retrievedItem}`);
@@ -102,4 +123,6 @@ export {
   removeItem,
   removeAllItems,
   storageAvailable,
+  doesItemExist, 
+  searchItem
 };
