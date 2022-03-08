@@ -10,9 +10,11 @@ import {
   addProject,
   cancelAddProject,
   submitProject,
+  deleteProject,
+  editProject,
 } from "./project";
 import { Logic } from "./logic";
-import { retrieveAllItemsByType, retrieveItem } from "./localStorage";
+import { retrieveAllItemsByType, retrieveItem, saveItem } from "./localStorage";
 
 const logic = new Logic();
 
@@ -134,19 +136,42 @@ function projects(sidebar) {
           </div>
           `
         );
-        
+
         addListener(
           returnNodeById(`project-item-edit-${project.id}`),
-          "click", 
+          "click",
           () => {
-            console.log("edit project!");
+            const projectItem = returnNodeById(`project-item-${project.id}`);
+            clear(projectItem);
+            const input = createElt(
+              projectItem,
+              "input",
+              "input-edit-project",
+              `input-edit-project-${project.id}`,
+              ""
+            );
+            //input.onfocus = inputFocus;
+            input.onblur = inputBlur;
+
+            function inputBlur() {
+              project.title = input.value;
+              saveItem(project.id, project);
+              logic.setLiveProject(project.title);
+              clear(returnNodeById("sidebar"));
+              projects(returnNodeById("sidebar"));
+              clear(returnNodeById("container"));
+              container(returnNodeById("body"));
+            }
           }
-        )
+        );
         addListener(
           returnNodeById(`project-item-delete-${project.id}`),
           "click",
           () => {
-            console.log("delete project!");
+            deleteProject(retrieveItem(project.id));
+            logic.setLiveProject("Inbox");
+            clear(returnNodeById("sidebar"));
+            projects(returnNodeById("sidebar"));
           }
         );
       }
@@ -165,21 +190,25 @@ function projects(sidebar) {
     </span>Add Project</p>`
   );
 
-  const addProjectPopUp = createElt(
-    sidebar,
-    "div",
-    "add-project-popup",
-    "add-project-popup",
-    `<input class="input-add-project-popup" id="input-add-project-popup" type="text">
-    <div class="add-project-popup-buttons">
-      <button class="button-project-popup-add button-project-popup" id="button-project-popup-add">
-        Add
-      </button>
-      <button class="button-project-popup-cancel button-project-popup" id="button-project-popup-cancel">
-        Cancel
-      </button>
-    </div>`
-  );
+  function addProjectPopUp() {
+    createElt(
+      sidebar,
+      "div",
+      "add-project-popup",
+      "add-project-popup",
+      `<input class="input-add-project-popup" id="input-add-project-popup" type="text">
+      <div class="add-project-popup-buttons">
+        <button class="button-project-popup-add button-project-popup" id="button-project-popup-add">
+          Add
+        </button>
+        <button class="button-project-popup-cancel button-project-popup" id="button-project-popup-cancel">
+          Cancel
+        </button>
+      </div>`
+    );
+  }
+
+  addProjectPopUp();
 
   addListener(inbox, "click", () => {
     logic.setLiveProject("Inbox");
@@ -204,25 +233,13 @@ function projects(sidebar) {
   );
   addListener(returnNodeById("button-project-popup-add"), "click", () => {
     const newProject = returnNodeById("input-add-project-popup").value;
-    console.log(newProject);
     submitProject(newProject);
     logic.setLiveProject(newProject);
     clear(returnNodeById("sidebar"));
     projects(returnNodeById("sidebar"));
+    clear(returnNodeById("container"));
+    container(returnNodeById("body"));
   });
-  /*
-  () => {
-    const addProjectBtn = returnNodeById("button-add-project");
-    addProjectBtn.style.display = "block";
-
-    const input = returnNodeById("input-add-project-popup");
-    input.value = "";
-
-    const popUpDiv = returnNodeById("add-project-popup");
-    popUpDiv.classList.remove("add-project-popup-active");
-    popUpDiv.classList.add("add-project-popup");
-  }
-   */
 }
 
 function container(body) {

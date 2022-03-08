@@ -1,5 +1,12 @@
-import { createElt, returnNodeById } from "./domFunctions";
-import { saveItem, doesItemExist, searchItem } from "./localStorage";
+import { createElt, returnNodeById, clear } from "./domFunctions";
+import {
+  saveItem,
+  doesItemExist,
+  searchItem,
+  retrieveAllItems,
+  retrieveAllItemsByType,
+  removeItem,
+} from "./localStorage";
 
 class Project {
   constructor(title = "Inbox") {
@@ -61,4 +68,43 @@ function submitProject(title) {
   }
 }
 
-export { Project, addProject, cancelAddProject, submitProject };
+function editProject(project) {
+  console.log("editProject");
+  console.log(project);
+}
+
+
+// Update existing project
+function updateProject(project, newTitle) {
+  const lsTaskArr = retrieveAllItemsByType("task");
+  lsTaskArr.forEach((obj) => {
+    if (obj.project === project.title) {
+      obj.project = newTitle;
+      saveItem(obj.id, obj);
+    }
+  });
+  project.title = newTitle;
+  saveItem(project.id, project);
+}
+
+// Delete existing project
+function deleteProject(project) {
+  const lsTaskArr = retrieveAllItemsByType("task");
+  lsTaskArr.forEach((obj) => {
+    if (obj.project === project.title) {
+      obj.project = "Inbox";
+      saveItem(obj.id, obj);
+    }
+  });
+
+  removeItem(project.id);
+}
+
+export {
+  Project,
+  addProject,
+  cancelAddProject,
+  submitProject,
+  deleteProject,
+  editProject,
+};

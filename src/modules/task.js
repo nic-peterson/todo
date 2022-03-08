@@ -37,6 +37,12 @@ class Task {
   changePriority(newPriority) {
     this.priority = newPriority;
   }
+
+  changeProject(newProject) {
+    this.project = newProject;
+  }
 }
+
+
 
 export { Task };
