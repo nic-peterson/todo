@@ -26,9 +26,6 @@ class Logic {
 
   setLiveProject(projectName) {
     const searchObj = searchItem(projectName);
-    // const searchObj = retrieveAllItemsByType("project").find(
-    //   (obj) => obj.title === projectName
-    // );
     if (searchObj) {
       this.liveProject = searchObj;
     } else if (projectName === "Today" || projectName === "Week") {
@@ -46,9 +43,6 @@ class Logic {
     let inboxProject;
     if (isTypeEmpty("project") !== true) {
       inboxProject = searchItem("Inbox");
-      // const lsArr = retrieveAllItemsByType("project");
-      // inboxProject = lsArr.find((obj) => obj.title === "Inbox");
-      //lsArr.filter((item) => item.title === "Inbox")[0];
     } else {
       inboxProject = new Project("Inbox");
       saveItem(inboxProject.id, inboxProject);

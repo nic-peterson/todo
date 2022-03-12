@@ -103,12 +103,8 @@ function projects(sidebar) {
     ""
   );
 
-  console.log(projectList);
-
   const popuplateProjectList = () => {
     const projectArr = retrieveAllItemsByType("project");
-    console.log(projectList);
-    console.log(projectArr);
     projectArr.forEach((project) => {
       if (project.title !== "Inbox") {
         createElt(
@@ -150,7 +146,6 @@ function projects(sidebar) {
               `input-edit-project-${project.id}`,
               ""
             );
-            //input.onfocus = inputFocus;
             input.onblur = inputBlur;
 
             function inputBlur() {
@@ -260,6 +255,7 @@ function container(body) {
     "task-list",
     ""
   );
+
   const addTaskBtn = createElt(
     returnNodeById("container"),
     "button",
@@ -269,6 +265,103 @@ function container(body) {
   add
   </span>Add Task</p>`
   );
+
+  function taskModal() {
+    const modal = createElt(
+      returnNodeById("container"),
+      "div",
+      "add-task-modal",
+      "add-task-modal",
+      ""
+    );
+    // create modalHeader
+    const modalHeader = createElt(
+      modal,
+      "div",
+      "add-task-modal-header",
+      "add-task-modal-header",
+      `
+      <h5 class="add-task-modal-title" id="add-task-model-Title">New Task</h5>
+      <button type="button" class="close" id="add-task-modal-close" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      `
+    );
+    // create modalBody
+    const modalBody = createElt(
+      modal,
+      "div",
+      "add-task-modal-body",
+      "add-task-modal-body",
+      `<form>
+        <div class="add-task-modal-title-desc">
+          <div class="add-task-modal-title">
+            <label for="title">Title:</label><br>
+            <input type="text" id="add-task-input-title" name="title"><br>
+          </div>
+          <div class="add-task-modal-desc">
+            <label for="desc">Description:</label><br>
+            <input type="text" id="add-task-input-desc" name"desc"><br>
+          </div>
+        </div>
+        <div class="add-task-modal-other-info" id="add-task-modal-other-info">
+          <div class="add-task-modal-due-date">
+            <label for="due-date">Due Date:</label><br>
+            <input 
+              type="datetime-local" 
+              id="add-task-modal-due-date" 
+              name="due-date"
+              value=${new Date()}
+            >
+          </div>
+          <div class="add-task-modal-priority">
+            <label for="priority">Priority:</label><br>
+            <select name="priority id="add-task-modal-priority-selector">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+      </form>`
+    );
+
+    const modalFooter = createElt(
+      modal,
+      "div",
+      "add-task-modal-footer",
+      "add-task-modal-footer",
+      `
+      <button 
+        class="add-task-modal-close-btn"
+        id="add-task-modal-close-btn"
+        >
+        Close
+      </button>
+      <button 
+        class="add-task-modal-add-btn"
+        id="add-task-modal-add-btn"
+        >
+        Add Task
+      </button>
+      `
+    );
+    document
+      .getElementById("add-task-modal-close")
+      .addEventListener("click", clearTaskModal);
+    document
+      .getElementById("add-task-modal-close-btn")
+      .addEventListener("click", clearTaskModal);
+  }
+
+  function clearTaskModal() {
+    clear(returnNodeById("container"));
+    container();
+  }
+
+  document.getElementById("button-add-task").addEventListener("click", () => {
+    taskModal();
+  });
 }
 
 function footer() {

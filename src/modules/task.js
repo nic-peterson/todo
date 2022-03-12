@@ -1,3 +1,5 @@
+import { createElt, returnNodeById } from "./domFunctions";
+
 class Task {
   constructor(title, description, dueDate, priority, project) {
     this.title = title;
@@ -42,7 +44,5 @@ class Task {
     this.project = newProject;
   }
 }
-
-
 
 export { Task };
