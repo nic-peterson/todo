@@ -134,6 +134,16 @@ function projects(sidebar) {
         );
 
         addListener(
+          returnNodeById(`project-item-${project.id}`),
+          "click",
+          () => {
+            logic.setLiveProject(project.title);
+            clear(returnNodeById("container"));
+            container(returnNodeById("body"));
+          }
+        );
+
+        addListener(
           returnNodeById(`project-item-edit-${project.id}`),
           "click",
           () => {
