@@ -16,6 +16,7 @@ import {
 import { Logic } from "./logic";
 import { retrieveAllItemsByType, retrieveItem, saveItem } from "./localStorage";
 import { Task } from "./task";
+import UI from "./ui-old";
 
 const logic = new Logic();
 
@@ -267,6 +268,92 @@ function container(body) {
     ""
   );
 
+  const populateTaskList = () => {
+    const taskArr = retrieveAllItemsByType("task");
+    taskArr.forEach((task) => {
+      if (task.project === logic.returnProject().title) {
+        createElt(
+          taskList,
+          "div",
+          "task-item",
+          `task-item-${task.id}`,
+          `<div class="task-left">
+            <div class="radio ${task.priority}" id="complete-task-${task.id}">
+              <span class="material-icons"> radio_button_unchecked </span>
+            </div>
+            <div class="task-basic-info">
+              <div class="task-title">${task.title}</div>
+              <div class="task-due-date">${task.dueDate}</div>
+            </div>
+          </div>
+          <div class="task-right">
+            <div class="edit-task" id="edit-task-${task.id}">
+              <span class="material-icons"> edit </span>
+            </div>
+            <div class="delete-task" id="delete-task-${task.id}">
+              <span class="material-icons"> close </span>
+            </div>
+          </div>
+      `
+        );
+      }
+    });
+  };
+
+  populateTaskList();
+
+  /*
+  renderTaskList(parentNode, tasks) {
+    if (tasks.length < 1) {
+      return;
+    } else {
+      tasks.forEach((elt) => {
+        const task = this.createTaskDomElt(parentNode, elt);
+      });
+    }
+  }
+
+  createTaskDomElt(parentNode, elt) {
+    const taskHtmlElt = createElt(
+      parentNode,
+      "div",
+      "task",
+      elt.id,
+      `<div class="task-left">
+      <div class="radio ${elt.priority}" id="complete-task-${elt.id}">
+        <span class="material-icons"> radio_button_unchecked </span>
+      </div>
+      <div class="task-basic-info">
+        <div class="task-title">${elt.title}</div>
+        <div class="task-due-date">${elt.dueDate}</div>
+      </div>
+    </div>
+    <div class="task-right">
+      <div class="edit-task" id="edit-task-${elt.id}">
+        <span class="material-icons"> edit </span>
+      </div>
+      <div class="delete-task" id="delete-task-${elt.id}">
+        <span class="material-icons"> close </span>
+    </div>
+      `
+    );
+
+    addListener(returnNodeById(`complete-task-${elt.id}`), "click", () => {
+      console.log(`complete-task-${elt.id}`);
+      console.log("createTaskDomElt");
+      console.log(this);
+      this.completeTask(elt.id);
+    });
+    addListener(returnNodeById(`edit-task-${elt.id}`), "click", () => {
+      console.log(`edit-task-${elt.id}`);
+    });
+    addListener(returnNodeById(`delete-task-${elt.id}`), "click", () => {
+      console.log(`delete-task-${elt.id}`);
+    });
+    //return taskHTMLElt
+  }
+  */
+
   const addTaskBtn = createElt(
     returnNodeById("container"),
     "button",
@@ -375,11 +462,13 @@ function container(body) {
 
   function addTask() {
     const title = document.getElementById("add-task-input-title").value;
-    const description=document.getElementById("add-task-input-desc").value;
-    const dueDate=document.getElementById("add-task-modal-due-date").value;
-    const priority=document.getElementById("add-task-modal-priority-selector").value;
+    const description = document.getElementById("add-task-input-desc").value;
+    const dueDate = document.getElementById("add-task-modal-due-date").value;
+    const priority = document.getElementById(
+      "add-task-modal-priority-selector"
+    ).value;
     //const priority = "high";
-    const project=logic.returnProject().title;
+    const project = logic.returnProject().title;
     const task = new Task(title, description, dueDate, priority, project);
     saveItem(task.id, task);
     clearTaskModal();
