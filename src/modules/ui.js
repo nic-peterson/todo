@@ -15,6 +15,7 @@ import {
 } from "./project";
 import { Logic } from "./logic";
 import { retrieveAllItemsByType, retrieveItem, saveItem } from "./localStorage";
+import { Task } from "./task";
 
 const logic = new Logic();
 
@@ -326,10 +327,10 @@ function container(body) {
           </div>
           <div class="add-task-modal-priority">
             <label for="priority">Priority:</label><br>
-            <select name="priority id="add-task-modal-priority-selector">
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+            <select name="priority" id="add-task-modal-priority-selector">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
             </select>
           </div>
         </div>
@@ -362,6 +363,9 @@ function container(body) {
     document
       .getElementById("add-task-modal-close-btn")
       .addEventListener("click", clearTaskModal);
+    document
+      .getElementById("add-task-modal-add-btn")
+      .addEventListener("click", addTask);
   }
 
   function clearTaskModal() {
@@ -369,7 +373,21 @@ function container(body) {
     container();
   }
 
+  function addTask() {
+    const title = document.getElementById("add-task-input-title").value;
+    const description=document.getElementById("add-task-input-desc").value;
+    const dueDate=document.getElementById("add-task-modal-due-date").value;
+    const priority=document.getElementById("add-task-modal-priority-selector").value;
+    //const priority = "high";
+    const project=logic.returnProject().title;
+    const task = new Task(title, description, dueDate, priority, project);
+    saveItem(task.id, task);
+    clearTaskModal();
+  }
+
   document.getElementById("button-add-task").addEventListener("click", () => {
+    const addTaskBtn = returnNodeById("button-add-task");
+    addTaskBtn.style.display = "none";
     taskModal();
   });
 }
