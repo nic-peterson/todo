@@ -17,11 +17,13 @@ function createElt(parent, type, className, id, innerHTML) {
 function addListener(obj, type, listener) {
   obj.addEventListener(type, listener);
 }
+
 // clear parent container by removing all child elts
 function clear(parent) {
   parent.style = "";
   parent.innerHTML = "";
 }
+
 
 // use in conjunction with clear. First clear child elts
 // then reneder the elements to show the changes

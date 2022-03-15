@@ -57,7 +57,7 @@ function cancelAddProject() {
   popUpDiv.classList.add("add-project-popup");
 }
 
-// function creates a submits the user-generated project
+// function submits the user-generated project
 // from the form
 function submitProject(title) {
   if (doesItemExist(title)) {

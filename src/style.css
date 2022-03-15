@@ -258,7 +258,7 @@ body {
   margin: 0 auto;
 }
 
-.task {
+.task-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -288,6 +288,7 @@ body {
 }
 
 .button-add-task {
+  display: flex;
   background-color: #fff;
   text-align: left;
   vertical-align: middle;
@@ -354,7 +355,7 @@ body {
   color: red;
 }
 
-.mid {
+.medium {
   color: orange;
 }
 

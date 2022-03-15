@@ -278,7 +278,7 @@ function container(body) {
           "task-item",
           `task-item-${task.id}`,
           `<div class="task-left">
-            <div class="radio ${task.priority}" id="complete-task-${task.id}">
+            <div class="radio ${task.priority.toLowerCase()}" id="complete-task-${task.id}">
               <span class="material-icons"> radio_button_unchecked </span>
             </div>
             <div class="task-basic-info">
@@ -302,58 +302,6 @@ function container(body) {
 
   populateTaskList();
 
-  /*
-  renderTaskList(parentNode, tasks) {
-    if (tasks.length < 1) {
-      return;
-    } else {
-      tasks.forEach((elt) => {
-        const task = this.createTaskDomElt(parentNode, elt);
-      });
-    }
-  }
-
-  createTaskDomElt(parentNode, elt) {
-    const taskHtmlElt = createElt(
-      parentNode,
-      "div",
-      "task",
-      elt.id,
-      `<div class="task-left">
-      <div class="radio ${elt.priority}" id="complete-task-${elt.id}">
-        <span class="material-icons"> radio_button_unchecked </span>
-      </div>
-      <div class="task-basic-info">
-        <div class="task-title">${elt.title}</div>
-        <div class="task-due-date">${elt.dueDate}</div>
-      </div>
-    </div>
-    <div class="task-right">
-      <div class="edit-task" id="edit-task-${elt.id}">
-        <span class="material-icons"> edit </span>
-      </div>
-      <div class="delete-task" id="delete-task-${elt.id}">
-        <span class="material-icons"> close </span>
-    </div>
-      `
-    );
-
-    addListener(returnNodeById(`complete-task-${elt.id}`), "click", () => {
-      console.log(`complete-task-${elt.id}`);
-      console.log("createTaskDomElt");
-      console.log(this);
-      this.completeTask(elt.id);
-    });
-    addListener(returnNodeById(`edit-task-${elt.id}`), "click", () => {
-      console.log(`edit-task-${elt.id}`);
-    });
-    addListener(returnNodeById(`delete-task-${elt.id}`), "click", () => {
-      console.log(`delete-task-${elt.id}`);
-    });
-    //return taskHTMLElt
-  }
-  */
-
   const addTaskBtn = createElt(
     returnNodeById("container"),
     "button",
@@ -365,6 +313,7 @@ function container(body) {
   );
 
   function taskModal() {
+    console.log("taskModal")
     const modal = createElt(
       returnNodeById("container"),
       "div",
@@ -372,6 +321,7 @@ function container(body) {
       "add-task-modal",
       ""
     );
+    console.trace(modal);
     // create modalHeader
     const modalHeader = createElt(
       modal,
@@ -385,6 +335,8 @@ function container(body) {
       </button>
       `
     );
+
+    
     // create modalBody
     const modalBody = createElt(
       modal,
@@ -444,6 +396,11 @@ function container(body) {
       </button>
       `
     );
+    
+    console.trace(modal);
+    console.trace(modal.parentNode);
+
+
     document
       .getElementById("add-task-modal-close")
       .addEventListener("click", clearTaskModal);
@@ -467,7 +424,6 @@ function container(body) {
     const priority = document.getElementById(
       "add-task-modal-priority-selector"
     ).value;
-    //const priority = "high";
     const project = logic.returnProject().title;
     const task = new Task(title, description, dueDate, priority, project);
     saveItem(task.id, task);
@@ -476,6 +432,8 @@ function container(body) {
 
   document.getElementById("button-add-task").addEventListener("click", () => {
     const addTaskBtn = returnNodeById("button-add-task");
+    console.log(addTaskBtn);
+    console.log(addTaskBtn.style.display);
     addTaskBtn.style.display = "none";
     taskModal();
   });
