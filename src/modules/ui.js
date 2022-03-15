@@ -309,6 +309,12 @@ function container(body) {
             removeItem(task.id);
             clearTaskModal();
           });
+        
+          document
+           .getElementById(`edit-task-${task.id}`)
+           .addEventListener("click", () => {
+             console.trace("edit task!")
+           })
       }
     });
   };
@@ -334,7 +340,7 @@ function container(body) {
       "add-task-modal",
       ""
     );
-    console.trace(modal);
+  
     // create modalHeader
     const modalHeader = createElt(
       modal,
@@ -443,8 +449,6 @@ function container(body) {
 
   document.getElementById("button-add-task").addEventListener("click", () => {
     const addTaskBtn = returnNodeById("button-add-task");
-    console.log(addTaskBtn);
-    console.log(addTaskBtn.style.display);
     addTaskBtn.style.display = "none";
     taskModal();
   });
