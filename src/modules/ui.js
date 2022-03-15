@@ -15,6 +15,8 @@ import {
 } from "./project";
 import { Logic } from "./logic";
 import {
+  doesProjectExist,
+  doesTaskExist,
   removeItem,
   retrieveAllItemsByType,
   retrieveItem,
@@ -309,12 +311,13 @@ function container(body) {
             removeItem(task.id);
             clearTaskModal();
           });
-        
-          document
-           .getElementById(`edit-task-${task.id}`)
-           .addEventListener("click", () => {
-             console.trace("edit task!")
-           })
+
+        document
+          .getElementById(`edit-task-${task.id}`)
+          .addEventListener("click", () => {
+            console.trace("edit task!");
+            taskModal(task.id);
+          });
       }
     });
   };
@@ -331,8 +334,17 @@ function container(body) {
   </span>Add Task</p>`
   );
 
-  function taskModal() {
-    console.log("taskModal");
+  function taskModal(taskId) {
+    console.trace(taskId);
+    let task;
+    console.trace(doesTaskExist(taskId));
+    if(doesTaskExist(taskId)) {
+      console.trace(retrieveItem(taskId));
+      task = retrieveItem(taskId);
+
+    }
+    console.log("task:")
+    console.trace(task);
     const modal = createElt(
       returnNodeById("container"),
       "div",
@@ -340,7 +352,7 @@ function container(body) {
       "add-task-modal",
       ""
     );
-  
+
     // create modalHeader
     const modalHeader = createElt(
       modal,
@@ -355,6 +367,8 @@ function container(body) {
       `
     );
 
+    // value=${" " |  }
+
     // create modalBody
     const modalBody = createElt(
       modal,
@@ -365,11 +379,11 @@ function container(body) {
         <div class="add-task-modal-title-desc">
           <div class="add-task-modal-title">
             <label for="title">Title:</label><br>
-            <input type="text" id="add-task-input-title" name="title"><br>
+            <input type="text" id="add-task-input-title" name="title" value=${task ? task.title : " "}><br>
           </div>
           <div class="add-task-modal-desc">
             <label for="desc">Description:</label><br>
-            <input type="text" id="add-task-input-desc" name"desc"><br>
+            <input type="text" id="add-task-input-desc" name"desc" value=${task ? task.description : " "}><br>
           </div>
         </div>
         <div class="add-task-modal-other-info" id="add-task-modal-other-info">
@@ -379,7 +393,7 @@ function container(body) {
               type="datetime-local" 
               id="add-task-modal-due-date" 
               name="due-date"
-              value=${new Date()}
+              value=${task ? task.dueDate : new Date()}
             >
           </div>
           <div class="add-task-modal-priority">
@@ -414,9 +428,6 @@ function container(body) {
       </button>
       `
     );
-
-    console.trace(modal);
-    console.trace(modal.parentNode);
 
     document
       .getElementById("add-task-modal-close")

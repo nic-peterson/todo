@@ -1,7 +1,7 @@
 import { createElt, returnNodeById, clear } from "./domFunctions";
 import {
   saveItem,
-  doesItemExist,
+  doesProjectExist,
   searchItem,
   retrieveAllItems,
   retrieveAllItemsByType,
@@ -60,7 +60,7 @@ function cancelAddProject() {
 // function submits the user-generated project
 // from the form
 function submitProject(title) {
-  if (doesItemExist(title)) {
+  if (doesProjectExist(title)) {
     return;
   } else {
     const newProject = new Project(title);

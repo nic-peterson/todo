@@ -44,7 +44,7 @@ function retrieveAllItemsByType(type) {
   return items;
 }
 
-function doesItemExist(item) {
+function doesProjectExist(item) {
   const lsArr = retrieveAllItemsByType("project");
   const returnTarget = lsArr.find(
     (obj) => obj.title.toLowerCase() === item.toLowerCase()
@@ -52,6 +52,22 @@ function doesItemExist(item) {
   if (returnTarget) {
     return true;
   } else {
+    return false;
+  }
+}
+
+function doesTaskExist(itemId) {
+  const lsArr = retrieveAllItemsByType("task");
+  const returnTarget = lsArr.find(
+    obj => obj.id === itemId
+  );
+  console.trace(`returnTarget: ${returnTarget}`);
+  console.trace(returnTarget);
+  // returnTarget ? true : false;
+  if(returnTarget) {
+    return true;
+  }
+  else {
     return false;
   }
 }
@@ -123,6 +139,7 @@ export {
   removeItem,
   removeAllItems,
   storageAvailable,
-  doesItemExist, 
-  searchItem
+  doesProjectExist, 
+  searchItem,
+  doesTaskExist
 };
