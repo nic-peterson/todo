@@ -14,7 +14,12 @@ import {
   editProject,
 } from "./project";
 import { Logic } from "./logic";
-import { retrieveAllItemsByType, retrieveItem, saveItem } from "./localStorage";
+import {
+  removeItem,
+  retrieveAllItemsByType,
+  retrieveItem,
+  saveItem,
+} from "./localStorage";
 import { Task } from "./task";
 import UI from "./ui-old";
 
@@ -278,7 +283,9 @@ function container(body) {
           "task-item",
           `task-item-${task.id}`,
           `<div class="task-left">
-            <div class="radio ${task.priority.toLowerCase()}" id="complete-task-${task.id}">
+            <div class="radio ${task.priority.toLowerCase()}" id="complete-task-${
+            task.id
+          }">
               <span class="material-icons"> radio_button_unchecked </span>
             </div>
             <div class="task-basic-info">
@@ -294,8 +301,14 @@ function container(body) {
               <span class="material-icons"> close </span>
             </div>
           </div>
-      `
+        `
         );
+        document
+          .getElementById(`delete-task-${task.id}`)
+          .addEventListener("click", () => {
+            removeItem(task.id);
+            clearTaskModal();
+          });
       }
     });
   };
@@ -313,7 +326,7 @@ function container(body) {
   );
 
   function taskModal() {
-    console.log("taskModal")
+    console.log("taskModal");
     const modal = createElt(
       returnNodeById("container"),
       "div",
@@ -336,7 +349,6 @@ function container(body) {
       `
     );
 
-    
     // create modalBody
     const modalBody = createElt(
       modal,
@@ -396,10 +408,9 @@ function container(body) {
       </button>
       `
     );
-    
+
     console.trace(modal);
     console.trace(modal.parentNode);
-
 
     document
       .getElementById("add-task-modal-close")

@@ -345,6 +345,11 @@ body {
   padding: .25rem;
 }
 
+.edit-task,
+.delete-task {
+  cursor: pointer;
+}
+
 .footer {
   display: flex;
   align-items: center;
