@@ -25,8 +25,5 @@ function clear(parent) {
 }
 
 
-// use in conjunction with clear. First clear child elts
-// then reneder the elements to show the changes
-function render() {}
 
-export { returnNodeById, createElt, addListener, clear, render };
+export { returnNodeById, createElt, addListener, clear };

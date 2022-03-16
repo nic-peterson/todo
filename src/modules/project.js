@@ -1,9 +1,7 @@
-import { createElt, returnNodeById, clear } from "./domFunctions";
+import { returnNodeById } from "./domFunctions";
 import {
   saveItem,
   doesProjectExist,
-  searchItem,
-  retrieveAllItems,
   retrieveAllItemsByType,
   removeItem,
 } from "./localStorage";
@@ -73,19 +71,6 @@ function editProject(project) {
   console.log(project);
 }
 
-
-// Update existing project
-function updateProject(project, newTitle) {
-  const lsTaskArr = retrieveAllItemsByType("task");
-  lsTaskArr.forEach((obj) => {
-    if (obj.project === project.title) {
-      obj.project = newTitle;
-      saveItem(obj.id, obj);
-    }
-  });
-  project.title = newTitle;
-  saveItem(project.id, project);
-}
 
 // Delete existing project
 function deleteProject(project) {

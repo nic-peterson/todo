@@ -1,11 +1,7 @@
 import {
-  isEmpty,
   isTypeEmpty,
-  retrieveAllItems,
   retrieveAllItemsByType,
-  retrieveItem,
   saveItem,
-  doesItemExist,
   searchItem,
 } from "./localStorage";
 import { Project } from "./project";
