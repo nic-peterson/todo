@@ -27,10 +27,18 @@ class Logic {
   setLiveProject(projectName) {
     const searchObj = searchItem(projectName);
     if (searchObj) {
+      console.log(searchObj);
       this.liveProject = searchObj;
-    } else if (projectName === "Today" || projectName === "Week") {
-      this.liveProject = { title: projectName };
-    } else {
+    } else if (projectName === "Today") {
+      console.log("inside");
+      this.liveProject = { "title": "Today" };
+      console.log(this.liveProject);
+    } else if (projectName === "Week") {
+      console.log("inside");
+      this.liveProject = { "title": "Week" };
+      console.log(this.liveProject);
+    }
+    else {
       console.log("That project doesn't exist!");
     }
   }

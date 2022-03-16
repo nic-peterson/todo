@@ -345,7 +345,7 @@ body {
   padding: .25rem;
 }
 
-.edit-task,
+.edit-task, 
 .delete-task {
   cursor: pointer;
 }

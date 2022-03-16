@@ -23,7 +23,8 @@ import {
   saveItem,
 } from "./localStorage";
 import { Task } from "./task";
-import UI from "./ui-old";
+import { isToday, parseISO, isThisWeek } from "date-fns";
+//import UI from "./ui-old";
 
 const logic = new Logic();
 
@@ -142,6 +143,7 @@ function projects(sidebar) {
           `
         );
 
+        addListener(returnNodeById("button-today-project"), "click", () => {});
         addListener(
           returnNodeById(`project-item-${project.id}`),
           "click",
@@ -316,35 +318,238 @@ function container(body) {
           .getElementById(`edit-task-${task.id}`)
           .addEventListener("click", () => {
             console.trace("edit task!");
-            taskModal(task.id);
+            const addTaskBtn = returnNodeById("button-add-task");
+            addTaskBtn.style.display = "none";
+            editTaskModal(task.id);
+          });
+      } else if(logic.returnProject().title === "Today" && isToday(parseISO(task.dueDate))) {
+        console.trace(logic.returnProject());
+        createElt(
+          taskList,
+          "div",
+          "task-item",
+          `task-item-${task.id}`,
+          `<div class="task-left">
+            <div class="radio ${task.priority.toLowerCase()}" id="complete-task-${
+            task.id
+          }">
+              <span class="material-icons"> radio_button_unchecked </span>
+            </div>
+            <div class="task-basic-info">
+              <div class="task-title">${task.title}</div>
+              <div class="task-due-date">${task.dueDate}</div>
+            </div>
+          </div>
+          <div class="task-right">
+            <div class="edit-task" id="edit-task-${task.id}">
+              <span class="material-icons"> edit </span>
+            </div>
+            <div class="delete-task" id="delete-task-${task.id}">
+              <span class="material-icons"> close </span>
+            </div>
+          </div>
+        `
+        );
+        document
+          .getElementById(`delete-task-${task.id}`)
+          .addEventListener("click", () => {
+            removeItem(task.id);
+            clearTaskModal();
+          });
+
+        document
+          .getElementById(`edit-task-${task.id}`)
+          .addEventListener("click", () => {
+            console.trace("edit task!");
+            const addTaskBtn = returnNodeById("button-add-task");
+            addTaskBtn.style.display = "none";
+            editTaskModal(task.id);
+          });
+      } else if(logic.returnProject().title === "Week" && isThisWeek(parseISO(task.dueDate))) {
+        createElt(
+          taskList,
+          "div",
+          "task-item",
+          `task-item-${task.id}`,
+          `<div class="task-left">
+            <div class="radio ${task.priority.toLowerCase()}" id="complete-task-${
+            task.id
+          }">
+              <span class="material-icons"> radio_button_unchecked </span>
+            </div>
+            <div class="task-basic-info">
+              <div class="task-title">${task.title}</div>
+              <div class="task-due-date">${task.dueDate}</div>
+            </div>
+          </div>
+          <div class="task-right">
+            <div class="edit-task" id="edit-task-${task.id}">
+              <span class="material-icons"> edit </span>
+            </div>
+            <div class="delete-task" id="delete-task-${task.id}">
+              <span class="material-icons"> close </span>
+            </div>
+          </div>
+        `
+        );
+        document
+          .getElementById(`delete-task-${task.id}`)
+          .addEventListener("click", () => {
+            removeItem(task.id);
+            clearTaskModal();
+          });
+
+        document
+          .getElementById(`edit-task-${task.id}`)
+          .addEventListener("click", () => {
+            console.trace("edit task!");
+            const addTaskBtn = returnNodeById("button-add-task");
+            addTaskBtn.style.display = "none";
+            editTaskModal(task.id);
           });
       }
+      
     });
   };
 
   populateTaskList();
+
+  function editTaskModal(taskId) {
+    const task = retrieveItem(taskId);
+    const taskHtmlElt = document.getElementById(`task-item-${taskId}`);
+
+    const modal = document.createElement("div");
+    modal.className = "add-task-modal";
+    modal.id = "add-task-modal";
+
+    taskHtmlElt.after(modal);
+    taskHtmlElt.style.display = "none";
+
+    // create modalHeader
+    const modalHeader = createElt(
+      modal,
+      "div",
+      "add-task-modal-header",
+      "add-task-modal-header",
+      `
+      <h5 class="add-task-modal-title" id="add-task-model-Title">New Task</h5>
+      <button type="button" class="close" id="add-task-modal-close" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      `
+    );
+
+    // create modalBody
+    const modalBody = createElt(
+      modal,
+      "div",
+      "add-task-modal-body",
+      "add-task-modal-body",
+      `<form>
+        <div class="add-task-modal-title-desc">
+          <div class="add-task-modal-title">
+            <label for="title">Title:</label><br>
+            <input type="text" id="add-task-input-title" name="title" value=${
+              task ? task.title : " "
+            }><br>
+          </div>
+          <div class="add-task-modal-desc">
+            <label for="desc">Description:</label><br>
+            <input type="text" id="add-task-input-desc" name"desc" value=${
+              task ? task.description : " "
+            }><br>
+          </div>
+        </div>
+        <div class="add-task-modal-other-info" id="add-task-modal-other-info">
+          <div class="add-task-modal-due-date">
+            <label for="due-date">Due Date:</label><br>
+            <input 
+              type="datetime-local" 
+              id="add-task-modal-due-date" 
+              name="due-date"
+              value=${task ? task.dueDate : new Date()}
+            >
+          </div>
+          <div class="add-task-modal-priority">
+            <label for="priority">Priority:</label><br>
+            <select name="priority" id="add-task-modal-priority-selector">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+        </div>
+      </form>`
+    );
+
+    const modalFooter = createElt(
+      modal,
+      "div",
+      "add-task-modal-footer",
+      "add-task-modal-footer",
+      `
+      <button 
+        class="add-task-modal-close-btn"
+        id="add-task-modal-close-btn"
+        >
+        Close
+      </button>
+      <button 
+        class="update-task-modal-add-btn"
+        id="update-task-modal-add-btn"
+        >
+        Update Task
+      </button>
+      `
+    );
+
+    document
+      .getElementById("add-task-modal-close")
+      .addEventListener("click", clearTaskModal);
+    document
+      .getElementById("add-task-modal-close-btn")
+      .addEventListener("click", clearTaskModal);
+    document
+      .getElementById("update-task-modal-add-btn")
+      .addEventListener("click", () => {
+        updateTask(task.id);
+      });
+  }
+
+  function updateTask(taskId) {
+
+    const task = retrieveItem(taskId);
+    const title = document.getElementById("add-task-input-title").value;
+    const description = document.getElementById("add-task-input-desc").value;
+    const dueDate = document.getElementById("add-task-modal-due-date").value;
+    const priority = document.getElementById(
+      "add-task-modal-priority-selector"
+    ).value;
+
+    task.title = title;
+    task.description = description;
+    task.dueDate = dueDate;
+    task.priority = priority;
+
+    saveItem(task.id, task);
+    clearTaskModal();
+  }
 
   const addTaskBtn = createElt(
     returnNodeById("container"),
     "button",
     "button-add-task",
     "button-add-task",
-    `<p><span class="material-icons">
-  add
-  </span>Add Task</p>`
+    `<p>
+      <span class="material-icons">
+        add
+      </span>
+      Add Task
+    </p>`
   );
 
-  function taskModal(taskId) {
-    console.trace(taskId);
-    let task;
-    console.trace(doesTaskExist(taskId));
-    if(doesTaskExist(taskId)) {
-      console.trace(retrieveItem(taskId));
-      task = retrieveItem(taskId);
 
-    }
-    console.log("task:")
-    console.trace(task);
+  function addTaskModal() {
     const modal = createElt(
       returnNodeById("container"),
       "div",
@@ -367,8 +572,6 @@ function container(body) {
       `
     );
 
-    // value=${" " |  }
-
     // create modalBody
     const modalBody = createElt(
       modal,
@@ -379,11 +582,11 @@ function container(body) {
         <div class="add-task-modal-title-desc">
           <div class="add-task-modal-title">
             <label for="title">Title:</label><br>
-            <input type="text" id="add-task-input-title" name="title" value=${task ? task.title : " "}><br>
+            <input type="text" id="add-task-input-title" name="title"><br>
           </div>
           <div class="add-task-modal-desc">
             <label for="desc">Description:</label><br>
-            <input type="text" id="add-task-input-desc" name"desc" value=${task ? task.description : " "}><br>
+            <input type="text" id="add-task-input-desc" name"desc" ><br>
           </div>
         </div>
         <div class="add-task-modal-other-info" id="add-task-modal-other-info">
@@ -393,7 +596,7 @@ function container(body) {
               type="datetime-local" 
               id="add-task-modal-due-date" 
               name="due-date"
-              value=${task ? task.dueDate : new Date()}
+              value=${new Date()}
             >
           </div>
           <div class="add-task-modal-priority">
@@ -452,7 +655,13 @@ function container(body) {
     const priority = document.getElementById(
       "add-task-modal-priority-selector"
     ).value;
-    const project = logic.returnProject().title;
+    //const project = logic.returnProject().title;
+    let project;
+    if(logic.returnProject().title === "Today" | logic.returnProject().title === "Week") {
+      project = "Inbox";
+    } else {
+      project = logic.returnProject().title;
+    }
     const task = new Task(title, description, dueDate, priority, project);
     saveItem(task.id, task);
     clearTaskModal();
@@ -461,7 +670,7 @@ function container(body) {
   document.getElementById("button-add-task").addEventListener("click", () => {
     const addTaskBtn = returnNodeById("button-add-task");
     addTaskBtn.style.display = "none";
-    taskModal();
+    addTaskModal();
   });
 }
 
