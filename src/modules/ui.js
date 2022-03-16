@@ -1,22 +1,12 @@
+import { createElt, addListener, returnNodeById, clear } from "./domFunctions";
 import {
-  createElt,
-  addListener,
-  returnNodeById,
-  clear,
-  render,
-} from "./domFunctions";
-import {
-  Project,
   addProject,
   cancelAddProject,
   submitProject,
   deleteProject,
-  editProject,
 } from "./project";
 import { Logic } from "./logic";
 import {
-  doesProjectExist,
-  doesTaskExist,
   removeItem,
   retrieveAllItemsByType,
   retrieveItem,
@@ -24,7 +14,6 @@ import {
 } from "./localStorage";
 import { Task } from "./task";
 import { isToday, parseISO, isThisWeek } from "date-fns";
-//import UI from "./ui-old";
 
 const logic = new Logic();
 
@@ -113,7 +102,7 @@ function projects(sidebar) {
     ""
   );
 
-  const popuplateProjectList = () => {
+  function popuplateProjectList() {
     const projectArr = retrieveAllItemsByType("project");
     projectArr.forEach((project) => {
       if (project.title !== "Inbox") {
@@ -192,7 +181,8 @@ function projects(sidebar) {
         );
       }
     });
-  };
+  }
+  //const popuplateProjectList = () => {};
 
   popuplateProjectList();
 
@@ -322,7 +312,10 @@ function container(body) {
             addTaskBtn.style.display = "none";
             editTaskModal(task.id);
           });
-      } else if(logic.returnProject().title === "Today" && isToday(parseISO(task.dueDate))) {
+      } else if (
+        logic.returnProject().title === "Today" &&
+        isToday(parseISO(task.dueDate))
+      ) {
         console.trace(logic.returnProject());
         createElt(
           taskList,
@@ -365,7 +358,10 @@ function container(body) {
             addTaskBtn.style.display = "none";
             editTaskModal(task.id);
           });
-      } else if(logic.returnProject().title === "Week" && isThisWeek(parseISO(task.dueDate))) {
+      } else if (
+        logic.returnProject().title === "Week" &&
+        isThisWeek(parseISO(task.dueDate))
+      ) {
         createElt(
           taskList,
           "div",
@@ -408,7 +404,6 @@ function container(body) {
             editTaskModal(task.id);
           });
       }
-      
     });
   };
 
@@ -517,7 +512,6 @@ function container(body) {
   }
 
   function updateTask(taskId) {
-
     const task = retrieveItem(taskId);
     const title = document.getElementById("add-task-input-title").value;
     const description = document.getElementById("add-task-input-desc").value;
@@ -547,7 +541,6 @@ function container(body) {
       Add Task
     </p>`
   );
-
 
   function addTaskModal() {
     const modal = createElt(
@@ -655,9 +648,11 @@ function container(body) {
     const priority = document.getElementById(
       "add-task-modal-priority-selector"
     ).value;
-    //const project = logic.returnProject().title;
     let project;
-    if(logic.returnProject().title === "Today" | logic.returnProject().title === "Week") {
+    if (
+      (logic.returnProject().title === "Today") |
+      (logic.returnProject().title === "Week")
+    ) {
       project = "Inbox";
     } else {
       project = logic.returnProject().title;
