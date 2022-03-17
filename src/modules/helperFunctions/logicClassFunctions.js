@@ -4,7 +4,7 @@ import {
   saveItem,
   searchItem,
 } from './localStorage';
-import { Project } from '../classes/project';
+import Project from '../classes/project';
 
 export function returnType(type) {
   if (isTypeEmpty(type)) {

@@ -4,42 +4,25 @@ import {
   addListener,
   returnNodeById,
   clear,
-} from './helperFunctions/domFunctions';
+} from '../helperFunctions/domFunctions';
 import {
   addProject,
   cancelAddProject,
   submitProject,
   deleteProject,
-} from './classes/project';
-import Logic from './classes/logic';
+} from '../helperFunctions/projectClassFunctions';
+import Logic from '../classes/logic';
 import {
   removeItem,
   retrieveAllItemsByType,
   retrieveItem,
   saveItem,
-} from './helperFunctions/localStorage';
-import Task from './classes/task';
+} from '../helperFunctions/localStorage';
+import Task from '../classes/task';
+import header from './header';
+import footer from './footer';
 
-const logic = new Logic();
-
-// The header function creates a header div and a logo child element
-function header() {
-  createElt(document.body, 'div', 'header', 'header', '');
-
-  createElt(
-    returnNodeById('header'),
-    'div',
-    'logo',
-    'logo',
-    `<p><span class="material-icons">
-    done_all
-    </span>ToDo!</p>`,
-  );
-}
-
-function footer() {
-  createElt(document.body, 'div', 'footer', 'footer', '');
-}
+export const logic = new Logic();
 
 /*
 The body function creates a div element called body with two child elements:
@@ -719,9 +702,10 @@ function sidebar() {
 
 function body() {
   createElt(document.body, 'div', 'body', 'body', '');
-  sidebar(returnNodeById('body'));
-  container(returnNodeById('body'));
+  sidebar();
+  container();
 }
+
 // Initiatlize screen by calling the header, body, and footer functions
 const initialLoad = () => {
   header();
