@@ -1,11 +1,11 @@
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
-function returnNodeById(id) {
+export function returnNodeById(id) {
   const node = document.getElementById(id);
   return node;
 }
 
-function createElt(parent, type, className, id, innerHTML) {
+export function createElt(parent, type, className, id, innerHTML) {
   const parentNode = parent;
   const childNode = document.createElement(type);
   childNode.className = className;
@@ -16,16 +16,12 @@ function createElt(parent, type, className, id, innerHTML) {
   return childNode;
 }
 
-function addListener(obj, type, listener) {
+export function addListener(obj, type, listener) {
   obj.addEventListener(type, listener);
 }
 
 // clear parent container by removing all child elts
-function clear(parent) {
+export function clear(parent) {
   parent.style = '';
   parent.innerHTML = '';
 }
-
-export {
-  returnNodeById, createElt, addListener, clear,
-};

@@ -1,5 +1,5 @@
 import '../style.css';
-import { initialLoad } from './ui';
+import initialLoad from './ui';
 
 function app() {
   initialLoad();
