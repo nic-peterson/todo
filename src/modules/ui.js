@@ -17,14 +17,17 @@ import { isToday, parseISO, isThisWeek } from "date-fns";
 
 const logic = new Logic();
 
+// Initiatlize screen by calling the header, body, and footer functions
 const initialLoad = function () {
   header();
   body();
   footer();
 };
 
+// The header function creates a header div and a logo child element
 function header() {
   const header = createElt(document.body, "div", "header", "header", "");
+
   const logo = createElt(
     header,
     "div",
@@ -182,7 +185,6 @@ function projects(sidebar) {
       }
     });
   }
-  //const popuplateProjectList = () => {};
 
   popuplateProjectList();
 
@@ -316,7 +318,6 @@ function container(body) {
         logic.returnProject().title === "Today" &&
         isToday(parseISO(task.dueDate))
       ) {
-        console.trace(logic.returnProject());
         createElt(
           taskList,
           "div",
