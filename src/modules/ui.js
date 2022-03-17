@@ -39,6 +39,12 @@ function header() {
   );
 }
 
+/*
+The body function creates a div element called body with two child elements: 
+sidebar and container. The sidebar is used to show the project list and the
+container div shows the current project and relevant task list w/ add task button. 
+*/
+
 function body() {
   const body = createElt(document.body, "div", "body", "body", "");
   sidebar(body);
