@@ -233,6 +233,14 @@ function container() {
           </div>
         `,
         );
+
+        document
+          .getElementById(`complete-task-${task.id}`)
+          .addEventListener('click', () => {
+            removeItem(task.id);
+            clearTaskModal();
+          });
+
         document
           .getElementById(`delete-task-${task.id}`)
           .addEventListener('click', () => {
